@@ -1,7 +1,7 @@
 ---
 name: evidence-generator
 version: 1.1.0
-description: Define carpeta de evidencia jerárquica (Nombre Archivo / Ticket) en .playwright-mcp\evidence
+description: Define carpeta de evidencia jerárquica (Nombre Archivo / Ticket) en evidence
 ---
 
 # Skill: Evidence Generator
@@ -13,12 +13,12 @@ Este skill define **dónde guardar** capturas y reporte HTML organizados por el 
 Si el ticket `tc001` proviene del archivo `agenda.md`, **todos los archivos** deben guardarse en:
 
 ```
-.playwright-mcp\evidence\agenda\tc001\
+evidence\agenda\tc001\
 ```
 
 ## Convención de carpetas
 
-1. El primer nivel dentro de `.playwright-mcp\evidence\` debe ser el nombre del archivo `.md` origen (ej. `agenda`, `usuarios`, `epp`) sin extensión.
+1. El primer nivel dentro de `evidence\` debe ser el nombre del archivo `.md` origen (ej. `agenda`, `usuarios`, `epp`) sin extensión.
 2. El segundo nivel debe ser el ID del ticket (ej. `tc001`).
 
 ## Convención de nombres de archivos
@@ -31,7 +31,7 @@ Si el ticket `tc001` proviene del archivo `agenda.md`, **todos los archivos** de
 ```ts
 const ticketId = 'tc001';
 const sourceFile = 'agenda'; // Basado en agenda.md
-const evidenceDir = `.playwright-mcp\\evidence\\${sourceFile}\\${ticketId}`;
+const evidenceDir = `evidence\\${sourceFile}\\${ticketId}`;
 
 // Asegurar carpeta (si no existe)
 // fs.mkdirSync(evidenceDir, { recursive: true });
@@ -46,7 +46,7 @@ const htmlPath = `${evidenceDir}\\${ticketId}_reporte.html`;
 ## Output requerido
 
 - Todas las rutas de evidencia deben apuntar a la subcarpeta jerárquica: `[MD_NAME]\[TICKET_ID]\`.
-- Nunca guardar evidencia directamente en `.playwright-mcp\evidence` o solo en el ticket si existe una agrupación por archivo.
+- Nunca guardar evidencia directamente en `evidence` o solo en el ticket si existe una agrupación por archivo.
 
 ## Estructura del Reporte HTML
 
