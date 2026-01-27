@@ -24,7 +24,7 @@ Este skill se ejecuta **AUTOMÁTICAMENTE** como paso previo a la generación del
 ### Comando ejecutado internamente
 
 ```powershell
-node .github/skills/optimize-images/optimize-images.js .playwright-mcp/evidence/{mdFileName}/{ticketId}
+node .github/skills/optimize-images/optimize-images.js evidence/{mdFileName}/{ticketId}
 ```
 
 ### Ejemplos de ejecución automática
@@ -38,7 +38,7 @@ El agente ejecuta automáticamente:
 ```powershell
 # 1. Capturar evidencias → tc001_*.png
 # 2. OPTIMIZAR (este skill):
-node .github/skills/optimize-images/optimize-images.js .playwright-mcp/evidence/agenda/tc001
+node .github/skills/optimize-images/optimize-images.js evidence/agenda/tc001
 # 3. Generar reporte HTML → tc001_reporte.html
 ```
 
@@ -46,7 +46,7 @@ node .github/skills/optimize-images/optimize-images.js .playwright-mcp/evidence/
 
 También puede ejecutarse manualmente si es necesario:
 ```powershell
-node .github/skills/optimize-images/optimize-images.js .playwright-mcp/evidence/agenda/tc005
+node .github/skills/optimize-images/optimize-images.js evidence/agenda/tc005
 ```
 
 ## Comportamiento
@@ -78,7 +78,7 @@ node .github/skills/optimize-images/optimize-images.js .playwright-mcp/evidence/
               ↓
 ┌─────────────────────────────────────────────┐
 │ 1. Crear carpeta evidencia:                │
-│    .playwright-mcp/evidence/agenda/tc005   │
+│    evidence/agenda/tc005                   │
 └─────────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────────┐
@@ -117,13 +117,13 @@ Este skill complementa al skill `evidence-generator`. El flujo recomendado es:
 
 ```powershell
 # Después de completar TC-005 y generar su reporte:
-node .github/skills/optimize-images/optimize-images.js .playwright-mcp/evidence/agenda/tc005
+node .github/skills/optimize-images/optimize-images.js evidence/agenda/tc005
 ```
 
 ## Salida esperada
 
 ```
-📁 Optimizando imágenes en: .playwright-mcp/evidence/agenda/tc005
+📁 Optimizando imágenes en: evidence/agenda/tc005
 🔍 Encontradas 4 imágenes. Procesando...
 
 ✅ tc005_programacion_previa_creada.png: 245 KB → 89 KB (-63.7%)

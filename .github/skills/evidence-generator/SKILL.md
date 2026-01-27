@@ -101,3 +101,73 @@ El template está estructurado con:
 | `{{JSON_RESULTS}}` | Bloque JSON con syntax highlighting |
 | `{{EVIDENCE_PATH}}` | Ruta relativa de la imagen |
 | `{{EVIDENCE_ALT}}` | Texto alternativo de la imagen |
+
+---
+
+## Uso con Playwright MCP (OBLIGATORIO)
+
+Para capturar screenshots durante la ejecución de un test, usar el tool `mcp_playwright_browser_take_screenshot`.
+
+> **IMPORTANTE:** El tool de Playwright MCP guarda los archivos relativos a `.playwright-mcp/`. 
+> Para mantener consistencia, después de capturar los screenshots se deben **copiar a la carpeta `evidence/`** antes de generar el reporte HTML.
+
+### Flujo de captura y unificación:
+
+1. **Capturar** con Playwright MCP (se guardan en `.playwright-mcp/evidence/...`)
+2. **Copiar** a la carpeta unificada `evidence/{source-file}/{ticket-id}/`
+3. **Optimizar** imágenes en la carpeta `evidence/`
+4. **Generar** reporte HTML en la misma carpeta
+
+### Parámetros del tool:
+
+```
+mcp_playwright_browser_take_screenshot con parámetros:
+- filename: evidence/{source-file}/{ticket-id}/{ticket-id}_paso_XX.png
+- fullPage: true (opcional, para capturar página completa)
+```
+
+### Comando para copiar imágenes (ejecutar antes del reporte):
+
+```powershell
+Copy-Item -Path ".playwright-mcp\evidence\{source-file}\{ticket-id}\*.png" -Destination "evidence\{source-file}\{ticket-id}\" -Force
+```
+
+### Momentos obligatorios para capturar screenshots:
+1. **Inicio:** Estado inicial antes de cualquier acción
+2. **Formularios:** Después de completar campos importantes
+3. **Acciones críticas:** Antes y después de hacer clic en Guardar/Enviar
+4. **Validaciones:** Cuando aparecen mensajes de éxito o error
+5. **Final:** Estado final del sistema después de la prueba
+
+### Ejemplo de ejecución completa:
+
+```powershell
+# 1. Crear carpeta unificada
+New-Item -ItemType Directory -Force -Path "evidence/pg-3154/tc-001/"
+
+# 2. Ejecutar test y capturar screenshots (Playwright MCP los guarda en .playwright-mcp/)
+#    - tc-001_paso_01_inicio.png
+#    - tc-001_paso_02_formulario_completo.png
+#    - tc-001_paso_03_guardado_exitoso.png
+
+# 3. Copiar imágenes a carpeta unificada
+Copy-Item -Path ".playwright-mcp\evidence\pg-3154\tc-001\*.png" -Destination "evidence\pg-3154\tc-001\" -Force
+
+# 4. Optimizar imágenes
+node .github/skills/optimize-images/optimize-images.js evidence/pg-3154/tc-001
+
+# 5. Generar reporte HTML en la misma carpeta
+#    - evidence/pg-3154/tc-001/tc-001_reporte.html
+```
+
+### Estructura final unificada:
+
+```
+evidence/
+└── pg-3154/
+    └── tc-001/
+        ├── tc-001_paso_01_inicio.png
+        ├── tc-001_paso_02_formulario_completo.png
+        ├── tc-001_paso_03_guardado_exitoso.png
+        └── tc-001_reporte.html
+```
