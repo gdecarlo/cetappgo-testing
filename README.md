@@ -26,13 +26,21 @@ Este repositorio contiene la documentación, configuración y herramientas neces
 
 Estas "skills" son extensiones funcionales que permiten a los agentes realizar tareas complejas de forma autónoma.
 
-- **`optimize-images`**
-  - **Función:** Optimización automática de recursos visuales.
-  - **Detalle:** Reduce el tamaño de imágenes PNG/JPG generadas como evidencia sin perder calidad visual. Se utiliza típicamente antes de generar reportes.
+- **`commits`**
+  - **Función:** Estandarización de commits.
+  - **Detalle:** Estructura la generación de commits siguiendo el formato Conventional Commits.
 
 - **`evidence-generator`**
   - **Función:** Gestión estructurada de evidencia.
   - **Detalle:** Define y organiza la carpeta de evidencia jerárquica (por Nombre de Archivo / Ticket) dentro de `.playwright-mcp/evidence`.
+
+- **`optimize-images`**
+  - **Función:** Optimización automática de recursos visuales.
+  - **Detalle:** Reduce el tamaño de imágenes PNG/JPG generadas como evidencia sin perder calidad visual. Se utiliza típicamente antes de generar reportes.
+
+- **`readme`**
+  - **Función:** Mantenimiento de documentación.
+  - **Detalle:** Pautas para mantener este archivo README.md actualizado y sincronizado con la estructura del proyecto.
 
 - **`test-login`**
   - **Función:** Flujo de autenticación reutilizable.
@@ -50,6 +58,35 @@ Plantillas diseñadas para obtener los mejores resultados de los modelos de IA.
 
 - **`evidence/`**
   - Directorio destino donde se almacenan capturas, videos y trazas de las pruebas ejecutadas, estructuradas por el skill `evidence-generator`.
+
+## Instalación y Uso
+
+### Requisitos Previos
+
+- Node.js (v16 o superior)
+- npm o pnpm
+
+### Instalación
+
+1. Clonar el repositorio.
+2. Instalar dependencias:
+   ```bash
+   pnpm install
+   # o
+   npm install
+   ```
+
+### Ejecución de Pruebas
+
+Para ejecutar las pruebas configuradas con Playwright:
+
+```bash
+# Ejecutar todas las pruebas en modo headless
+npm test
+
+# Ejecutar pruebas viendo el navegador
+npm run test:headed
+```
 
 ---
 *Documentación actualizada automáticamente.*
