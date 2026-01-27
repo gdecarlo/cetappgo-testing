@@ -1,4 +1,5 @@
 {
     "chat.useAgentSkills": true,
-    "chat.useNestedAgentsMdFiles": true
+    "chat.useNestedAgentsMdFiles": true,
+    "chat.agent.maxRequests": 50
 }
