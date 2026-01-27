@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte {{TICKET_ID}} - {{TICKET_TITLE}}</title>
+    
+    <!-- ═══════════════════════════════════════════════════════════════════
+         VARIABLES CSS - Modificar aquí para cambios globales de estilo
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        :root {
+            /* Colores principales */
+            --color-primary-dark: #1e3c72;
+            --color-primary-light: #2a5298;
+            --color-accent: #667eea;
+            --color-accent-secondary: #764ba2;
+            
+            /* Estados */
+            --color-pass: #28a745;
+            --color-fail: #dc3545;
+            
+            /* Fondos */
+            --color-bg-light: #f8f9fa;
+            --color-bg-json: #282c34;
+            
+            /* Texto */
+            --color-text-primary: #333;
+            --color-text-secondary: #666;
+            --color-text-light: white;
+            --color-text-json: #abb2bf;
+            
+            /* JSON Syntax Highlighting */
+            --color-json-key: #61afef;
+            --color-json-string: #98c379;
+            --color-json-number: #d19a66;
+            --color-json-boolean: #c678dd;
+            
+            /* Espaciado */
+            --spacing-xs: 5px;
+            --spacing-sm: 10px;
+            --spacing-md: 15px;
+            --spacing-lg: 20px;
+            --spacing-xl: 30px;
+            --spacing-xxl: 40px;
+            
+            /* Bordes */
+            --border-radius-sm: 8px;
+            --border-radius-md: 10px;
+            --border-radius-lg: 15px;
+            --border-radius-pill: 50px;
+            
+            /* Sombras */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+            
+            /* Tipografía */
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-family-mono: 'Courier New', monospace;
+            --font-size-xs: 0.9em;
+            --font-size-sm: 1.1em;
+            --font-size-md: 1.2em;
+            --font-size-lg: 1.3em;
+            --font-size-xl: 1.8em;
+            --font-size-xxl: 2.5em;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         RESET Y ESTILOS BASE
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-secondary) 100%);
+            padding: var(--spacing-lg);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         HEADER - Encabezado del reporte
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .header {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-light) 100%);
+            color: var(--color-text-light);
+            padding: var(--spacing-xxl);
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: var(--font-size-xxl);
+            margin-bottom: var(--spacing-sm);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .test-id {
+            font-size: var(--font-size-md);
+            opacity: 0.9;
+            font-weight: 300;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         STATUS BADGE - Indicador de estado PASS/FAIL
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .status {
+            padding: var(--spacing-xl) var(--spacing-xxl);
+            background: var(--color-bg-light);
+            border-bottom: 3px solid var(--color-pass);
+        }
+        
+        .status.fail {
+            border-bottom-color: var(--color-fail);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: var(--spacing-md) var(--spacing-xl);
+            background: var(--color-pass);
+            color: var(--color-text-light);
+            border-radius: var(--border-radius-pill);
+            font-size: var(--font-size-lg);
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .status-badge.fail {
+            background: var(--color-fail);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         CONTENIDO PRINCIPAL - Secciones y grids
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .content {
+            padding: var(--spacing-xxl);
+        }
+        
+        .section {
+            margin-bottom: var(--spacing-xxl);
+        }
+        
+        .section h2 {
+            color: var(--color-primary-dark);
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 3px solid var(--color-accent);
+        }
+        
+        /* Grid de información general */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .info-item {
+            background: var(--color-bg-light);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-md);
+            border-left: 4px solid var(--color-accent);
+        }
+        
+        .info-item label {
+            display: block;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-xs);
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .info-item value {
+            display: block;
+            color: var(--color-text-primary);
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         PASOS Y VALIDACIONES - Lista de steps
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .steps {
+            background: var(--color-bg-light);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .step {
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            background: white;
+            border-radius: var(--border-radius-sm);
+            border-left: 4px solid var(--color-accent);
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s;
+        }
+        
+        .step:hover {
+            transform: translateX(5px);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--color-accent);
+            color: var(--color-text-light);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: var(--spacing-sm);
+            font-weight: bold;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         EVIDENCIAS - Grid de imágenes
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .evidence {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+        }
+        
+        .evidence-item {
+            background: var(--color-bg-light);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s;
+        }
+        
+        .evidence-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .evidence-item h3 {
+            color: var(--color-primary-dark);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-md);
+        }
+        
+        .evidence-item img {
+            width: 100%;
+            border-radius: var(--border-radius-sm);
+            border: 2px solid #ddd;
+            margin-top: var(--spacing-sm);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .evidence-item img:hover {
+            transform: scale(1.02);
+            border-color: var(--color-accent);
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         JSON CONTAINER - Bloque de resultados JSON
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .json-container {
+            background: var(--color-bg-json);
+            color: var(--color-text-json);
+            padding: 25px;
+            border-radius: var(--border-radius-md);
+            overflow-x: auto;
+            font-family: var(--font-family-mono);
+            font-size: var(--font-size-xs);
+            line-height: 1.6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .json-key { color: var(--color-json-key); }
+        .json-string { color: var(--color-json-string); }
+        .json-number { color: var(--color-json-number); }
+        .json-boolean { color: var(--color-json-boolean); }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FOOTER - Pie de página
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        .footer {
+            background: var(--color-primary-dark);
+            color: var(--color-text-light);
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+        
+        .timestamp {
+            font-size: var(--font-size-xs);
+            opacity: 0.8;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         RESPONSIVE - Adaptación móvil
+    ═══════════════════════════════════════════════════════════════════ -->
+    <style>
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: var(--font-size-xl);
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .evidence {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        
+        <!-- ═══════════════════════════════════════════════════════════════
+             HEADER
+        ═══════════════════════════════════════════════════════════════ -->
+        <div class="header">
+            <h1>Reporte de Prueba Automatizada</h1>
+            <div class="test-id">{{TICKET_ID}} – {{TICKET_TITLE}}</div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════
+             STATUS BADGE
+             Cambiar clase a "status fail" y "status-badge fail" para FAIL
+        ═══════════════════════════════════════════════════════════════ -->
+        <div class="status">
+            <span class="status-badge">✓ PASS</span>
+        </div>
+        
+        <div class="content">
+            
+            <!-- ═══════════════════════════════════════════════════════════
+                 SECCIÓN: Información General
+            ═══════════════════════════════════════════════════════════ -->
+            <div class="section">
+                <h2>📋 Información General</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Caso de Prueba</label>
+                        <value>{{TICKET_ID}}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Estado</label>
+                        <value>{{STATUS_TEXT}}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Ambiente</label>
+                        <value>{{AMBIENTE}}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>URL Base</label>
+                        <value>{{URL_BASE}}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Fecha de Ejecución</label>
+                        <value>{{FECHA}}</value>
+                    </div>
+                    <div class="info-item">
+                        <label>Usuario de Prueba</label>
+                        <value>{{USUARIO}}</value>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ═══════════════════════════════════════════════════════════
+                 SECCIÓN: Objetivo
+            ═══════════════════════════════════════════════════════════ -->
+            <div class="section">
+                <h2>🎯 Objetivo</h2>
+                <p style="font-size: 1.1em; line-height: 1.8; color: #555; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    {{OBJETIVO}}
+                </p>
+            </div>
+            
+            <!-- ═══════════════════════════════════════════════════════════
+                 SECCIÓN: Pasos Ejecutados
+                 Repetir .step por cada paso del test
+            ═══════════════════════════════════════════════════════════ -->
+            <div class="section">
+                <h2>📝 Pasos Ejecutados</h2>
+                <div class="steps">
+                    <!-- {{STEPS_START}} -->
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <strong>Título del paso:</strong> Descripción del paso ejecutado
+                    </div>
+                    <!-- {{STEPS_END}} -->
+                </div>
+            </div>
+            
+            <!-- ═══════════════════════════════════════════════════════════
+                 SECCIÓN: Validaciones Exitosas
+                 Repetir .step por cada validación
+            ═══════════════════════════════════════════════════════════ -->
+            <div class="section">
+                <h2>✅ Validaciones Exitosas</h2>
+                <div class="steps">
+                    <!-- {{VALIDATIONS_START}} -->
+                    <div class="step">
+                        ✓ Descripción de la validación cumplida
+                    </div>
+                    <!-- {{VALIDATIONS_END}} -->
+                </div>
+            </div>
+            
+            <!-- ═══════════════════════════════════════════════════════════
+                 SECCIÓN: Resultados JSON
+            ═══════════════════════════════════════════════════════════ -->
+            <div class="section">
+                <h2>📊 Resultados JSON</h2>
+                <div class="json-container">
+<pre>{{JSON_RESULTS}}</pre>
+                </div>
+            </div>
+            
+            <!-- ═══════════════════════════════════════════════════════════
+                 SECCIÓN: Evidencias
+                 Repetir .evidence-item por cada screenshot
+            ═══════════════════════════════════════════════════════════ -->
+            <div class="section">
+                <h2>📸 Evidencias</h2>
+                <div class="evidence">
+                    <!-- {{EVIDENCE_START}} -->
+                    <div class="evidence-item">
+                        <h3>1. Título de la evidencia</h3>
+                        <p style="color: #666; margin-bottom: 10px;">Descripción de la captura</p>
+                        <img src="{{EVIDENCE_PATH}}" alt="{{EVIDENCE_ALT}}" onclick="window.open(this.src, '_blank')">
+                    </div>
+                    <!-- {{EVIDENCE_END}} -->
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════
+             FOOTER
+        ═══════════════════════════════════════════════════════════════ -->
+        <div class="footer">
+            <p class="timestamp">Reporte generado automáticamente - {{FECHA}}</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">CetApp GO - Testing Framework</p>
+        </div>
+        
+    </div>
+</body>
+</html>
