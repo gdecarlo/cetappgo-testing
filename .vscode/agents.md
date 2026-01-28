@@ -1,12 +1,35 @@
 # AGENTS.md — Frontend UI Testing (Playwright)
 
-## REGLA DE ORO (CRÍTICO)
+## REGLA DE ORO #1 (CRÍTICO)
 
 **PROHIBICIÓN ESTRICTA DE RENDERIZADO:** Bajo ninguna circunstancia este agente debe mostrar, previsualizar o incrustar imágenes en el chat.
 
 - Las imágenes SON EVIDENCIA PRIVADA en disco.
 - El chat es EXCLUSIVAMENTE para logs de texto y estructuras JSON.
 - CUALQUIER intento de usar `![]` o `<img src>` se considera un fallo de seguridad.
+
+---
+
+## REGLA DE ORO #2 (CRÍTICO) - EJECUCIÓN DE TESTS
+
+**PROHIBICIÓN ABSOLUTA DE CREAR ARCHIVOS .spec.ts:**
+
+Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre el test", "testea X"):
+
+### ❌ NUNCA HACER:
+- **NO** crear archivos `.spec.ts` ni ningún archivo de test de Playwright tradicional
+- **NO** crear ni modificar `playwright.config.ts`
+- **NO** ejecutar comandos como `pnpm test`, `npx playwright test`, `npm test`
+- **NO** generar código de test para que el usuario lo ejecute manualmente
+
+### ✅ SIEMPRE HACER:
+- **USAR** las herramientas MCP de Playwright (`mcp_playwright_browser_*`) para ejecutar tests interactivamente
+- **NAVEGAR** directamente al sitio web usando `mcp_playwright_browser_navigate`
+- **INTERACTUAR** con la UI usando `mcp_playwright_browser_click`, herramientas de tipeo, etc.
+- **CAPTURAR** evidencia con las herramientas de screenshot del MCP
+- **SEGUIR** el flujo obligatorio descrito abajo
+
+> **Razón:** Este proyecto usa Playwright MCP para testing interactivo en tiempo real, NO para generar suites de tests automatizados tradicionales.
 
 ---
 
@@ -75,3 +98,44 @@ La respuesta final DEBE ser un resumen ejecutivo en texto plano que siga este or
 > **Nota para el modelo:** Si el tool de Playwright te devuelve un objeto que contiene la imagen, ignora el binario y utiliza únicamente la ruta del archivo para tu respuesta.
 
 ## generar un html con el resultado del testing. usar las imagenes generadas en el html
+
+---
+
+## HERRAMIENTAS MCP DE PLAYWRIGHT DISPONIBLES
+
+Estas son las herramientas que DEBES usar para ejecutar tests (NO crear archivos .spec.ts):
+
+### Navegación y Control del Browser
+- `mcp_playwright_browser_navigate` - Navegar a una URL
+- `mcp_playwright_browser_navigate_back` - Volver a la página anterior
+- `mcp_playwright_browser_close` - Cerrar el navegador
+- `mcp_playwright_browser_tabs` - Gestionar pestañas
+
+### Interacción con Elementos
+- `mcp_playwright_browser_click` - Hacer clic en elementos
+- `mcp_playwright_browser_select_option` - Seleccionar opciones en dropdowns
+- `mcp_playwright_browser_press_key` - Presionar teclas
+- `mcp_playwright_browser_drag` - Arrastrar elementos
+- `mcp_playwright_browser_handle_dialog` - Manejar diálogos/modales
+
+### Captura de Evidencia
+- `activate_page_capture_tools` - Activar herramientas de captura (screenshots, accessibility snapshots)
+- `activate_form_and_file_management_tools` - Activar herramientas de formularios
+
+### Esperas y Sincronización
+- `mcp_playwright_browser_wait_for` - Esperar por texto o tiempo
+
+### Debugging
+- `mcp_playwright_browser_console_messages` - Ver mensajes de consola
+- `mcp_playwright_browser_network_requests` - Ver requests de red
+- `mcp_playwright_browser_evaluate` - Ejecutar JavaScript en la página
+
+### Ejemplo de Flujo Correcto
+```
+1. mcp_playwright_browser_navigate → ir al sitio
+2. Usar herramientas de interacción para login
+3. Navegar al módulo correspondiente
+4. Ejecutar los pasos del test case
+5. Capturar screenshots en cada paso importante
+6. Generar reporte HTML con evidencias
+```
