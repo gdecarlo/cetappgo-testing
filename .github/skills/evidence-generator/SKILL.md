@@ -60,9 +60,11 @@ El reporte HTML debe seguir el siguiente esquema visual y estructural:
 4. **Objetivo**: Párrafo descriptivo del propósito del test.
 5. **Pasos Ejecutados**: Lista numerada con círculos morados (#667eea) y descripción de cada paso.
 6. **Validaciones Exitosas**: Lista con checkmarks (✓) de todas las validaciones cumplidas.
-7. **Resultados JSON**: Bloque de código con fondo oscuro (#282c34) y syntax highlighting.
-8. **Evidencias**: Grid de imágenes con título, descripción y thumbnail clickeable.
-9. **Footer**: Fondo azul oscuro (#1e3c72) con timestamp de generación.
+7. **Datos de Prueba**: JSON con los datos de entrada usados en el test (formularios, configuraciones, etc.).
+8. **Respuesta del Sistema**: JSON con datos del response (IDs creados, mensajes de confirmación, etc.).
+9. **Errores de Consola**: JSON con errores de JavaScript capturados durante la ejecución (vacío si no hubo errores).
+10. **Evidencias**: Grid de imágenes con título, descripción y thumbnail clickeable.
+11. **Footer**: Fondo azul oscuro (#1e3c72) con timestamp de generación.
 
 ### Paleta de colores
 
@@ -98,7 +100,9 @@ El template está estructurado con:
 | `{{URL_BASE}}` | URL base del ambiente |
 | `{{USUARIO}}` | Usuario de prueba |
 | `{{OBJETIVO}}` | Descripción del objetivo del test |
-| `{{JSON_RESULTS}}` | Bloque JSON con syntax highlighting |
+| `{{TEST_DATA_JSON}}` | JSON con datos de entrada usados en la prueba |
+| `{{RESPONSE_JSON}}` | JSON con respuesta del sistema (IDs, mensajes, etc.) |
+| `{{CONSOLE_ERRORS_JSON}}` | JSON con errores de JavaScript capturados |
 | `{{EVIDENCE_PATH}}` | Ruta relativa de la imagen |
 | `{{EVIDENCE_ALT}}` | Texto alternativo de la imagen |
 

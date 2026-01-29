@@ -298,7 +298,7 @@
     </style>
 
     <!-- ═══════════════════════════════════════════════════════════════════
-         JSON CONTAINER - Bloque de resultados JSON
+         JSON CONTAINERS - Datos de prueba, respuesta y errores
     ═══════════════════════════════════════════════════════════════════ -->
     <style>
         .json-container {
@@ -317,6 +317,44 @@
         .json-string { color: var(--color-json-string); }
         .json-number { color: var(--color-json-number); }
         .json-boolean { color: var(--color-json-boolean); }
+        
+        .data-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .data-section {
+            background: var(--color-bg-light);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-lg);
+            border-left: 4px solid var(--color-accent);
+        }
+        
+        .data-section.response {
+            border-left-color: var(--color-pass);
+        }
+        
+        .data-section.errors {
+            border-left-color: var(--color-fail);
+        }
+        
+        .data-section.no-errors {
+            border-left-color: var(--color-pass);
+        }
+        
+        .data-section h3 {
+            color: var(--color-primary-dark);
+            margin-bottom: var(--spacing-md);
+            font-size: var(--font-size-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .data-section .json-container {
+            margin-top: var(--spacing-sm);
+        }
     </style>
 
     <!-- ═══════════════════════════════════════════════════════════════════
@@ -470,12 +508,39 @@
             </div>
             
             <!-- ═══════════════════════════════════════════════════════════
-                 SECCIÓN: Resultados JSON
+                 SECCIÓN: Datos Técnicos (Entrada, Respuesta, Errores)
             ═══════════════════════════════════════════════════════════ -->
             <div class="section">
-                <h2>📊 Resultados JSON</h2>
-                <div class="json-container">
-<pre>{{JSON_RESULTS}}</pre>
+                <h2>📊 Datos Técnicos</h2>
+                <div class="data-sections">
+                    
+                    <!-- Datos de Prueba (entrada) -->
+                    <div class="data-section">
+                        <h3>📥 Datos de Prueba</h3>
+                        <p style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Datos de entrada utilizados en el test</p>
+                        <div class="json-container">
+<pre>{{TEST_DATA_JSON}}</pre>
+                        </div>
+                    </div>
+                    
+                    <!-- Respuesta del Sistema -->
+                    <div class="data-section response">
+                        <h3>📤 Respuesta del Sistema</h3>
+                        <p style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Datos retornados por el sistema</p>
+                        <div class="json-container">
+<pre>{{RESPONSE_JSON}}</pre>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- Errores de Consola (separado, ancho completo) -->
+                <div class="data-section errors" style="margin-top: var(--spacing-lg);">
+                    <h3>🐛 Errores de Consola JavaScript</h3>
+                    <p style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Errores capturados durante la ejecución del test</p>
+                    <div class="json-container">
+<pre>{{CONSOLE_ERRORS_JSON}}</pre>
+                    </div>
                 </div>
             </div>
             
