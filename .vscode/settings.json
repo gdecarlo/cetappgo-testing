@@ -1,5 +1,9 @@
 {
     "chat.useAgentSkills": true,
     "chat.useNestedAgentsMdFiles": true,
-    "chat.agent.maxRequests": 50
+    "chat.agent.maxRequests": 50,
+    "chat.tools.terminal.autoApprove": {
+        "Copy-Item": true,
+        "Start-Process": true
+    }
 }
