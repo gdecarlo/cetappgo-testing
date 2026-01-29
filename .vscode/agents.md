@@ -1,5 +1,23 @@
 # AGENTS.md — Frontend UI Testing (Playwright)
 
+## REGLA DE ORO #0 (CRÍTICO) - CONFIGURACIÓN CENTRALIZADA
+
+**ANTES de ejecutar cualquier prueba, el agente DEBE:**
+1. **LEER** el archivo `.vscode/config.md` para obtener URLs y credenciales
+2. **USAR ÚNICAMENTE** la URL definida en ese archivo
+3. **NUNCA inventar URLs** como `test1.cetappgo.com`, `demo.cetappgo.com`, etc.
+
+### Configuración Rápida (desde config.md)
+| Parámetro | Valor |
+|-----------|-------|
+| URL Base | `http://localhost:4173` |
+| Usuario | `cmartinez@cetapsa.com` |
+| Password | `12345678` |
+
+> ⚠️ **Si la URL cambia, se actualiza SOLO en `.vscode/config.md`**
+
+---
+
 ## REGLA DE ORO #1 (CRÍTICO)
 
 **PROHIBICIÓN ESTRICTA DE RENDERIZADO:** Bajo ninguna circunstancia este agente debe mostrar, previsualizar o incrustar imágenes en el chat.
@@ -33,6 +51,18 @@ Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre e
 
 ---
 
+## REGLA DE ORO #3 (CRÍTICO) - LIMPIEZA DE ESTADO
+
+**ANTES de ejecutar un flujo de Login o Inicio:**
+1. **DETECTAR** el estado actual (¿Ya estoy logueado?).
+2. **LIMPIAR** `localStorage` y `sessionStorage` obligatoriamente antes de tests de autenticación.
+   - Snippet JS obligatorio: `await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });`
+3. **RECARGAR** la página tras limpiar para forzar la aparición de la pantalla de Login.
+
+> **Razón:** El entorno local suele mantener sesiones activas. Si no se limpia, el test fallará buscando el formulario de login en una página que ya es el Dashboard.
+
+---
+
 ## Objetivo
 
 Explorar y verificar la UI mediante Playwright MCP, generando evidencia estandarizada solo en archivos locales.
@@ -41,6 +71,13 @@ Explorar y verificar la UI mediante Playwright MCP, generando evidencia estandar
 ## FLUJO OBLIGATORIO DE EJECUCIÓN DE TESTS (CRÍTICO)
 
 Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre el test TC-XXX"), DEBES seguir estos pasos EN ORDEN:
+
+### Paso 0: Cargar Configuración (OBLIGATORIO)
+- **LEER** el archivo `.vscode/config.md` para obtener:
+  - URL base del entorno de pruebas
+  - Credenciales de usuario
+  - Selectores de login
+- **NUNCA** inventar URLs. Usar ÚNICAMENTE la URL definida en config.md
 
 ### Paso 1: Identificar el origen del test
 - Leer el archivo `.md` que contiene el test case (ej: `.vscode/test-cases/pg-3154.md`)
@@ -132,8 +169,9 @@ Estas son las herramientas que DEBES usar para ejecutar tests (NO crear archivos
 
 ### Ejemplo de Flujo Correcto
 ```
-1. mcp_playwright_browser_navigate → ir al sitio
-2. Usar herramientas de interacción para login
+0. LEER .vscode/config.md → obtener URL y credenciales
+1. mcp_playwright_browser_navigate → ir a la URL de config.md (http://localhost:4173)
+2. Usar herramientas de interacción para login con credenciales de config.md
 3. Navegar al módulo correspondiente
 4. Ejecutar los pasos del test case
 5. Capturar screenshots en cada paso importante
