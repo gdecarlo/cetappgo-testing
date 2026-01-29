@@ -20,3 +20,7 @@ crear el repo de azure.
 data-testid desde la construccion del front para simplificar la referencia a los elementos.
 referenciar el ticket d ejira mediante un link en la evidencia.
 
+
+issues
+
+el intento de url siempre es con una de prueba o inventada. debe ser con la que configuremos por entorno.
