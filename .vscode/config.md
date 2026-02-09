@@ -5,7 +5,7 @@ Este archivo contiene **TODAS** las configuraciones que los agentes deben usar a
 ---
 ### Entorno activo
 ```
-local
+el que diga el caso de prueba.
 ```
 
 ## 🌐 URLs de Entorno
@@ -13,8 +13,8 @@ local
 | Entorno     | URL                              | Uso                        |
 |-------------|----------------------------------|----------------------------|
 | **local** | `http://localhost:4173`          | ✅ **URL por defecto**     |
-| testing 1  | `https://app1.cetappgo.com`       | cuando entorno activo sea test 1      |
-| testing 2  | `https://app2.cetappgo.com`       | cuando entorno activo sea test 2      |
+| testing 1  | `https://cetappgowebtest.z20.web.core.windows.net/`       | cuando entorno activo sea test 1      |
+| testing 2  | `https://cetappgotest2.z20.web.core.windows.net/`       | cuando entorno activo sea test 2      |
 
 
 
@@ -32,11 +32,15 @@ local
 - **Usuario:** `superusuario@cetapsa.com`
 - **Password:** `Cetap!2017`
 
-## 🔐 Credenciales entorno testing 1
+## 🔐 Credenciales entorno testing 1 y 2
 
 ### Usuario de Pruebas (por defecto)
 - **Usuario:** `cmartinez@cetapsa.com`
 - **Password:** `12345678`
+
+### Usuario de Pruebas alternativo(por si no funciona el por defecto)
+- **Usuario:** `nurkazambrano@gmail.com`
+- **Password:** `1234567890`
 
 ### Super Usuario (solo si se requiere explícitamente)
 - **Usuario:** `superusuario@cetapsa.com`
