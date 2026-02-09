@@ -5,7 +5,7 @@
 
 **Rol:** Actuá como un Ingeniero de QA Automation Senior experto en Playwright y Patrones de Diseño de Pruebas.
 
-**Tarea:** Analizá la Historia de Usuario {{TEST_ID}} y generá una cobertura de pruebas E2E completa para automatizar.
+**Tarea:** Analizá la Historia de Usuario {{TEST_ID}} y generá una cobertura de pruebas E2E completa para automatizar. Agrega claramente cual es el entorno para la prueba.
 
 **Instrucciones de Análisis:**
 1.  **Extracción de Entidades:** Identificá la entidad negocio y sus estados.

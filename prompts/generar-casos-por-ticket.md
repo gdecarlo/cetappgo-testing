@@ -1,1 +1,1 @@
-Usa las instrucciones del archivo generar-casos-desde-jira.md para Generar los casos de prueba reemplazando {{TEST_ID}} por pg-3325. No tomes como ejemplo un archivo ya generado sino que tenes que seguir las instrucciones de generar-casos-desde-jira.md
+Usa las instrucciones del archivo generar-casos-desde-jira.md para Generar los casos de prueba reemplazando {{TEST_ID}} por PG-XXXX. No tomes como ejemplo un archivo ya generado sino que tenes que seguir las instrucciones de generar-casos-desde-jira.md
