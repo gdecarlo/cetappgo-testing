@@ -3,7 +3,7 @@
 ## 1. Product Overview
 
 **Product Name:** CetApp Go  
-**Description:** A comprehensive Enterprise Health, Safety, and Quality (EHSQ) management platform designed to streamline operational processes, risk management, and compliance tracking. The application serves as a centralized hub for managing inspections, incidents, training, and documentation.
+**Description:** A comprehensive Enterprise Health, Safety, and Quality (EHSQ) management platform designed to streamline operational processes, risk management, and compliance tracking. The application serves as a centralized hub for managing inspections, incidents, training, and documentation to ensure organizational safety and regulatory compliance.
 
 ## 2. Technical Architecture
 
@@ -12,10 +12,11 @@
 - **Frontend Framework:** Vue 3 (Composition API)
 - **Language:** TypeScript
 - **Build Tool:** Vite
-- **State Management:** Pinia
+- **State Management:** Pinia (with persistence plug-in)
 - **UI Component Library:** PrimeVue
 - **Styling:** UnoCSS, SCSS
 - **Routing:** Vue Router
+- **Maps:** Vue Google Map
 
 ### Development Tools
 
@@ -23,6 +24,7 @@
 - **Git Hooks:** Husky (Commitlint, Pre-commit checks)
 - **Testing:** Vitest (Unit Tests)
 - **API Client:** Axios
+- **CI/CD:** Azure Pipelines
 
 ## 3. Core Modules & Features
 
@@ -30,47 +32,51 @@ Based on the project structure and routing configuration, the application consis
 
 ### 3.1. Risk & Safety Management
 
-- **Gestion Riesgo (Risk Management):** Identification and assessment of operational risks.
-- **Gestion Peligro (Danger Management):** Specific handling of dangerous conditions or agents.
-- **MSDS (Material Safety Data Sheets):** Database and management of chemical safety data sheets.
-- **EPP (Personal Protective Equipment):** Management and tracking of PPE inventory and assignment.
+- **Gestion Riesgo (Risk Management):** Identification and assessment of operational risks using Matrix methodologies.
+- **Gestion Peligro (Danger Management):** Specific handling and classification of workplace hazards.
+- **MSDS (Material Safety Data Sheets):** Digital management of chemical safety data sheets and product approval workflows.
+- **EPP (Personal Protective Equipment):** Management of PPE inventory, assignment, and delivery tracking.
 
 ### 3.2. Incident & Action Tracking
 
-- **Incidente (Incidents):** Reporting and investigation workflows for workplace incidents.
-- **Hallazgo (Findings):** Tracking of audit or inspection findings.
-- **Gestion Acciones (Action Management):** Assignment and tracking of corrective and preventive actions (CAPA).
-- **Observaciones (Observations):** Safety observation reporting.
+- **Incidente (Incidents):** End-to-end reporting and investigation workflows for workplace incidents (including root cause analysis).
+- **Hallazgo (Findings):** Tracking of deviations found during audits or inspections.
+- **Gestion Acciones (Action Management):** Centralized system for Corrective and Preventive Actions (CAPA) and task tracking.
+- **Observaciones (Observations):** Reporting mechanism for unsafe acts or conditions.
 
 ### 3.3. Inspections & Compliance
 
-- **Inspecciones (Inspections):** Execution and management of safety/quality inspections.
-- **Plantillas (Templates):** Dynamic form builder for creating inspection and checklist templates.
-- **Permisos Trabajo (Work Permits):** Digital management of work permits (PTW).
+- **Inspecciones (Inspections):** Planning and execution of safety and quality inspections.
+- **Plantillas (Templates):** Dynamic form builder for creating custom checklists for inspections, incidents, and observations.
+- **Permisos Trabajo (Work Permits):** Digital issuance and approval flow for high-risk work permits (PTW).
 
 ### 3.4. Operational Management
 
-- **Gestión Documental:** Centralized document repository and version control.
-- **Capacitaciones (Trainings):** Tracking employee training records and certifications.
-- **Mediciones (Measurements):** Recording of environmental or operational metrics.
-- **Tableros (Dashboards):** Visual analytics and reporting widgets.
+- **Gestión Documental:** Repository for controlling internal documents and procedures.
+- **Capacitaciones (Trainings):** Management of training plans and attendance records.
+- **Mediciones (Measurements):** Recording of industrial hygiene and environmental metrics.
+- **Tableros (Dashboards):** Visual analytics tools with KPI widgets using Chart.js.
+- **Inventario:** Inventory control systems.
 
 ### 3.5. Administration
 
-- **Users & Accounts:** User management, role assignment, and hierarchal setup.
-- **Configuracion:** System-wide settings and parameter management.
-- **Alta Super Admin:** Specialized onboarding/setup flows for administrators.
+- **Users & Accounts:** Comprehensive user management including roles and permissions.
+- **Configuracion:** Global system settings and master data management (Companies, Hierarchies, Brands).
+- **Institucional:** Corporate information display.
 
 ## 4. Key Functional Capabilities
 
-- **Dynamic Forms:** Ability to generate forms based on defined templates (`AppBasicForm`, `AppAbmFormGroup`).
-- **Internationalization (i18n):** Support for multiple languages (English/Spanish detected).
-- **File Management:** File upload capabilities with attachment handling (`AppFileUpload`, `AppFormFiles`).
-- **Interactive UI:** Rich UI components including data tables (`AppDatatableBuscador`), trees (`AppTreeSelectJerarquias`), and modals.
-- **Rich Text Editing:** Integrated TipTap editor for content creation.
+- **Dynamic Forms:** Robust capability to generate complex forms from JSON templates using components like `AppBasicForm`.
+- **Internationalization (i18n):** Multi-language support (English/Spanish) enabled via Vue I18n.
+- **File Management:** Integrated file upload and handling for attachments and evidence.
+- **Interactive UI:** Advanced user interface elements including complex data tables, modal dialogs, and tree selectors.
+- **Rich Text Editing:** Content creation supported by TipTap editor.
+- **Data Visualization:** Interactive charts and calendars for data analysis and scheduling.
+- **PDF Generation:** Client-side PDF creation and manipulation.
 
 ## 5. Development Standards
 
-- **Component Structure:** Modular component design with `auto-imports` and `unplugin-vue-components`.
-- **Commit Convention:** Conventional Commits enforced via Commitlint.
-- **Type Safety:** Strict TypeScript configuration for robust code quality.
+- **Component Structure:** Modular architecture leveraging `auto-imports` and `unplugin-vue-components` for efficiency.
+- **Commit Convention:** Strict adherence to Conventional Commits enforced by Commitlint.
+- **Type Safety:** High-standard TypeScript configuration to ensure code reliability.
+- **Code Quality:** Automated linting and formatting pipelines to maintain code consistency.

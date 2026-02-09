@@ -7,102 +7,151 @@ Este documento resume la arquitectura de módulos, rutas, vistas y permisos para
 - **Ruta Base:** `/` (Login redirige aquí si no hay sesión)
 - **Rutas Clave:**
   - `/login` (LoginView)
-  - `/forgot-password`
   - `/register`
-- **Roles:** Acceso Público.
-- **Vistas Principales:** `LoginView.vue` (Inferido), `RegisterView.vue`.
-- **Interacciones:** Formulario de credenciales (`#username`, `#password`), recuperación de contraseña.
-- **Flujo:** El usuario ingresa credenciales -> `auth.store` valida -> Redirección a Home.
+  - `/invite` (Registro por invitación)
+  - `/forgot-password`
+  - `/actualizar-datos` (Requiere Auth)
+- **Roles:** Acceso Público (excepto `actualizar-datos`).
+- **Vistas Principales:** 
+  - `LoginView.vue`
+  - `RegisterView.vue`
+  - `ForgotPassword.vue`
+  - `ActualizarDatosView.vue`
+- **Flujo:** 
+  - Login: Usuario ingresa credenciales -> Autenticación -> Redirección a Home.
+  - Registro: Formulario de alta -> Validación de correo -> Creación de cuenta.
 
 ## 2. Dashboard (Home)
 
 - **Ruta Base:** `/`
 - **Roles:** Autenticado (`requiresAuth: true`).
-- **Vistas Principales:** `src/views/Home/HomeView.vue`, `HomeWidgetsFrame.vue`.
-- **Elementos Clave:** Widgets de KPI, Accesos directos (Botones rápidos), Gráficos.
-- **Flujo:** Carga dinámica de widgets según permisos del usuario (`Modulo.Inspecciones`, `Modulo.Incidentes`, etc.).
+- **Vistas Principales:** 
+  - `HomeView.vue`
+- **Elementos Clave:** Widgets, accesos rápidos.
+- **Flujo:** Página de aterrizaje principal tras el login.
 
 ## 3. Inspecciones & Programación
 
 - **Ruta Base:** `/inspecciones`
 - **Rutas Clave:**
   - Lista: `/inspecciones`
-  - Programación (Agenda): `/inspecciones/programacion`
+  - Programación: `/inspecciones/programacion`
   - Alta: `/inspecciones/add`
-  - Ejecución: `/inspecciones/:id/edit`
-- **Roles:** `Modulo.Inspecciones`, `Permisos.ProgramarInspeccion`.
+  - Ejecución/Edición: `/inspecciones/:id/edit`
+  - Vista: `/inspecciones/:id/view`
+- **Roles:** Autenticado, permisos de módulo Inspecciones.
 - **Vistas Principales:**
   - `InspeccionesListView.vue`
-  - `ProgramacionInspeccionesView.vue` (Agenda)
+  - `ProgramacionInspeccionesView.vue`
   - `InspeccionView.vue`
-- **Interacciones:**
-  - **Agenda:** Navegación fechas (flechas, botón Hoy), Filtros, Drag & Drop (si aplica).
-  - **CRUD:** Formulario dinámico basado en plantillas.
-- **Flujo:** Programar en calendario -> Realizar inspección (llenar checklist) -> Sincronización.
+- **Flujo:** 
+  - **Programación:** Agendar inspecciones futuras.
+  - **Ejecución:** Completar checklist de inspección y adjuntar evidencias.
 
 ## 4. Gestión de Incidentes
 
 - **Ruta Base:** `/incidentes`
-- **Rutas Clave:** `/incidentes`, `/incidentes/add`, `/incidentes/:id/edit`.
+- **Rutas Clave:**
+  - Lista: `/incidentes`
+  - Alta: `/incidentes/add`
+  - Edición: `/incidentes/:id/edit`
+  - Vista: `/incidentes/:id/view`
 - **Roles:** `Modulo.Incidentes`, `Permissions.IncidenteRealizar`.
-- **Vistas Principales:** `IncidentesListView.vue`, `IncidenteView.vue`.
-- **Elementos Clave:** Formulario de reporte (Gravedad, Tipo), Adjunto de evidencia.
-- **Flujo:** Reporte inicial -> Análisis de causas -> Gestión de acciones correctivas -> Cierre.
+- **Vistas Principales:**
+  - `IncidentesListView.vue`
+  - `IncidenteView.vue`
+- **Flujo:** Reporte de incidente -> Análisis de causas (5 porqués, Ishikawa) -> Definición de acciones.
 
 ## 5. Hallazgos
 
 - **Ruta Base:** `/hallazgos`
+- **Rutas Clave:**
+  - Lista: `/hallazgos`
+  - Alta: `/hallazgos/add`
+  - Edición: `/hallazgos/:id/edit`
+  - Vista: `/hallazgos/:id/view`
 - **Roles:** `Modulo.Hallazgos`, `Permissions.HallazgoRealizar`.
-- **Vistas Principales:** `HallazgosListView.vue`, `HallazgoView.vue`.
-- **Interacciones:** Tablas de listado, modales de alta rápida.
-- **Flujo:** Detección de desviación -> Asignación de responsable -> Tratamiento -> Cierre.
+- **Vistas Principales:**
+  - `HallazgosListView.vue`
+  - `HallazgoView.vue`
+- **Flujo:** Registro de hallazgo -> Evaluación -> Asignación de acciones correctivas.
 
 ## 6. Permisos de Trabajo (PTW)
 
 - **Ruta Base:** `/permisos-trabajo`
+- **Rutas Clave:**
+  - Lista: `/permisos-trabajo`
+  - Alta: `/permisos-trabajo/add`
+  - Edición: `/permisos-trabajo/:id/edit`
+  - Vista: `/permisos-trabajo/:id/view`
 - **Roles:** `Modulo.PermisosTrabajo`, `Permissions.EmitirPermisoTrabajo`.
-- **Vistas Principales:** `PermisosTrabajoListView.vue`, `PermisoTrabajoView.vue`.
-- **Interacciones:** Firmas digitales, Checklists de validación previo al trabajo.
-- **Flujo:** Solicitud -> Aprobaciones (Jerárquicas/HSE) -> Emisión -> Cierre.
+- **Vistas Principales:**
+  - `PermisosTrabajoListView.vue`
+  - `PermisoTrabajoView.vue`
+- **Flujo:** Solicitud de permiso -> Aprobación (Firmas) -> Ejecución -> Cierre.
 
 ## 7. Gestión de Acciones
 
 - **Ruta Base:** `/gestion-acciones`
-- **Sub-módulos:** Tareas (`/gestion-acciones/tareas`).
+- **Sub-módulos:** 
+  - Acciones: `/gestion-acciones`
+  - Tareas: `/gestion-acciones/tareas`
+- **Rutas Clave:** Add, Edit, View.
 - **Roles:** `Modulo.GestionAcciones`.
-- **Vistas Principales:** `GestionAccionesListView.vue`, `GestionAccionView.vue`.
-- **Flujo:** Centraliza acciones derivadas de Incidentes, Hallazgos o Inspecciones. Seguimiento de vencimientos.
+- **Vistas Principales:**
+  - `GestionAccionesListView.vue`
+  - `GestionAccionView.vue`
+  - `GestionAccionesTareasListView.vue`
+- **Flujo:** Gestión centralizada de planes de acción derivados de otras fuentes (Incidentes, Hallazgos).
 
-## 8. Plantillas (Checklists)
+## 8. Plantillas (Listas de Verificación)
 
-- **Ruta Base:** `/listas-de-verificacion` (Inspección), `/plantillas-observacion`, etc.
-- **Roles:** Administradores y roles de configuración (`Permissions.Plantilla...`).
-- **Vistas Principales:** `PlantillasListView.vue`, `PlantillaView.vue`.
-- **Elementos Clave:** Builder de formularios (Drag & Drop de Secciones/Preguntas).
-- **Flujo:** Creación de estructura de preguntas -> Asignación a procesos (Inspección/Observación).
-
-## 9. Configuración
-
-- **Ruta Base:** `/configuracion`
+- **Ruta Base:** `/listas-de-verificacion` (y variantes para otros módulos)
 - **Rutas Clave:**
-  - Usuarios: `/configuracion/usuarios` (o `/users` directo según router).
-  - Roles: `/configuracion/roles`.
-  - Tableros: `/configuracion/tableros`.
-- **Roles:** `EsSuperAdministrador`, `EsSuperUsuario`.
-- **Vistas Principales:** `ConfiguracionLayout.vue`, `UserView.vue`, `RolesSistemaView.vue`.
-- **Interacciones:** Switches de permisos, ABM de tablas maestras (Empresas, Sectores).
+  - Inspección: `/listas-de-verificacion`
+  - Observación: `/plantillas-observacion`
+  - Incidente: `/plantillas-incidente`
+  - Hallazgo: `/plantillas-hallazgo`
+  - Biblioteca: `/plantillas-biblioteca`
+- **Roles:** Administradores.
+- **Vistas Principales:** `PlantillasListView`, `PlantillasView`.
+- **Flujo:** Creación y edición de estructuras de formularios dinámicos.
+
+## 9. Configuración y Usuarios
+
+- **Ruta Base:** `/configuracion` y `/users`
+- **Rutas Clave:**
+  - Usuarios: `/users` (Lista), `/users/add` (Alta), `/users/:username/:empresaId/edit` (Edición).
+  - Jerarquías: `/configuracion/jerarquia-nivel-1`, etc.
+  - Empresa: `/configuracion/empresa`
+  - Tablas Maestras: `/configuracion/marca`, `/configuracion/tipo-personal`, etc.
+- **Roles:** Administradores.
+- **Vistas Principales:**
+  - `UsersList.vue`
+  - `UserView.vue`
+  - `ConfiguracionLayout.vue`
+- **Flujo:** Administración del sistema, ABM de usuarios y configuración de catálogos.
 
 ## 10. Hoja de Seguridad (MSDS)
 
 - **Ruta Base:** `/mis-solicitudes`
-- **Otras Rutas:** `/productos-aprobados`.
+- **Otras Rutas:** 
+  - `/productos-aprobados`
+  - `/revision-solicitud`
+- **Rutas Clave:**
+  - Solicitudes: `/mis-solicitudes`, `/mis-solicitudes/add`
+  - Productos Aprobados: `/productos-aprobados`
 - **Roles:** `Modulo.MSDS`.
-- **Vistas Principales:** `HojaSeguridadHomologacionView.vue`, `ProductoAprobadoView.vue`.
-- **Flujo:** Solicitud de nuevo producto químico -> Homologación por áreas -> Aprobación -> Listado oficial.
+- **Vistas Principales:**
+  - `MisSolicitudesListView.vue`
+  - `SolicitudView.vue`
+  - `ProductosAprobadosListView.vue`
+- **Flujo:** Solicitud de homologación de producto -> Revisión -> Aprobación -> Catálogo de productos aprobados.
 
 ## 11. Institucional
 
 - **Ruta Base:** `/institucional`
-- **Roles:** Acceso general autenticado.
-- **Vistas Principales:** `InstitucionalView.vue`.
-- **Contenido:** Información de contacto, versiones de App, Links a stores.
+- **Roles:** Autenticado.
+- **Vistas Principales:** 
+  - `InstitucionalView.vue`
+- **Contenido:** Información general de la aplicación.
