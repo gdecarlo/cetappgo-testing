@@ -35,12 +35,13 @@ el que diga el caso de prueba.
 ## 🔐 Credenciales entorno testing 1 y 2
 
 ### Usuario de Pruebas (por defecto)
+- **Usuario:** `nurkazambrano@gmail.com`
+- **Password:** `1234567890`
+
+### Usuario de Pruebas alternativo(por si no funciona el por defecto)
 - **Usuario:** `cmartinez@cetapsa.com`
 - **Password:** `12345678`
 
-### Usuario de Pruebas alternativo(por si no funciona el por defecto)
-- **Usuario:** `nurkazambrano@gmail.com`
-- **Password:** `1234567890`
 
 ### Super Usuario (solo si se requiere explícitamente)
 - **Usuario:** `superusuario@cetapsa.com`
