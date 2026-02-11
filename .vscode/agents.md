@@ -1,20 +1,31 @@
 # AGENTS.md — Frontend UI Testing (Playwright)
 
-## REGLA DE ORO #0 (CRÍTICO) - CONFIGURACIÓN CENTRALIZADA
+## REGLA DE ORO #0 (CRÍTICO) - SETUP DE SESIÓN
 
-**ANTES de ejecutar cualquier prueba, el agente DEBE:**
-1. **LEER** el archivo `.vscode/config.md` para obtener URLs y credenciales
-2. **USAR ÚNICAMENTE** la URL definida en ese archivo
-3. **NUNCA inventar URLs** como `test1.cetappgo.com`, `demo.cetappgo.com`, etc.
+**ANTES de ejecutar cualquier prueba, el agente DEBE ejecutar el skill `setup_test_session`.**
 
-### Configuración Rápida (desde config.md)
-| Parámetro | Valor |
-|-----------|-------|
-| URL Base | `http://localhost:4173` |
-| Usuario | `cmartinez@cetapsa.com` |
-| Password | `12345678` |
+Este skill:
+1. **LEE** `.vscode/config.md` y selecciona la URL y credenciales correctas según el ambiente.
+2. **ABRE** el browser y **LIMPIA** `localStorage` y `sessionStorage`.
+3. **EJECUTA** el login con los selectores y credenciales del archivo.
+4. **RETORNA** `Ready` cuando el entorno está listo.
 
-> ⚠️ **Si la URL cambia, se actualiza SOLO en `.vscode/config.md`**
+**Prohibiciones absolutas:**
+- **NUNCA** leer la URL o el password manualmente si el skill está disponible.
+- **NUNCA** navegar a la URL antes de ejecutar el skill.
+
+---
+
+## Skills auxiliares obligatorios (anti-error)
+
+- `mcp_tools_guard` → Bloquear acciones prohibidas (CLI, `.spec.ts`, `playwright.config.ts`).
+- `pre_test_flow_enforcer` → Asegurar setup antes de navegar o interactuar.
+- `validate_test_case_source` → Extraer/validar `ticketId` y `sourceFile` del test case.
+- `ensure_evidence_folder` → Crear `evidence/{sourceFile}/{ticketId}/`.
+- `capture_error_screenshot` → Capturas estandarizadas ante errores.
+- `generate_html_report` → Reporte HTML final con evidencias.
+- `final_response_formatter` → Respuesta final con Status/JSON/archivos.
+- `evidence_paths_guard` → Evitar renderizado de imágenes en el chat.
 
 ---
 
@@ -53,13 +64,8 @@ Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre e
 
 ## REGLA DE ORO #3 (CRÍTICO) - LIMPIEZA DE ESTADO
 
-**ANTES de ejecutar un flujo de Login o Inicio:**
-1. **DETECTAR** el estado actual (¿Ya estoy logueado?).
-2. **LIMPIAR** `localStorage` y `sessionStorage` obligatoriamente antes de tests de autenticación.
-   - Snippet JS obligatorio: `await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });`
-3. **RECARGAR** la página tras limpiar para forzar la aparición de la pantalla de Login.
-
-> **Razón:** El entorno local suele mantener sesiones activas. Si no se limpia, el test fallará buscando el formulario de login en una página que ya es el Dashboard.
+La limpieza de estado se gestiona **exclusivamente** mediante el skill `setup_test_session`.
+No ejecutar limpieza manual de storage ni recargas previas fuera del skill.
 
 ---
 
@@ -72,52 +78,57 @@ Explorar y verificar la UI mediante Playwright MCP, generando evidencia estandar
 
 Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre el test TC-XXX"), DEBES seguir estos pasos EN ORDEN:
 
-### Paso 0: Cargar Configuración (OBLIGATORIO)
-- **LEER** el archivo `.vscode/config.md` para obtener:
-  - URL base del entorno de pruebas
-  - Credenciales de usuario
-  - Selectores de login
-- **NUNCA** inventar URLs. Usar ÚNICAMENTE la URL definida en config.md
+### Paso 0: Setup de sesión (OBLIGATORIO)
+- **REGISTRAR** `evidenceStartTime` al momento de recibir el pedido del usuario.
+- **EJECUTAR** el skill `mcp_tools_guard`.
+- **EJECUTAR** el skill `pre_test_flow_enforcer`.
+- **EJECUTAR** el skill `setup_test_session`.
+- **NO** leer URL/credenciales manualmente.
+- **NO** navegar a la URL antes del skill.
 
 ### Paso 1: Identificar el origen del test
+- **EJECUTAR** el skill `validate_test_case_source`.
 - Leer el archivo `.md` que contiene el test case (ej: `.vscode/test-cases/pg-3154.md`)
 - Extraer el ID del ticket (ej: `TC-001`) y el nombre del archivo origen (ej: `pg-3154`)
 
 ### Paso 2: Crear carpeta de evidencia ANTES de ejecutar
+- **EJECUTAR** el skill `ensure_evidence_folder`.
 - Usar el skill `evidence-generator` para determinar la ruta: `evidence/{nombre-archivo}/{ticket-id}/`
 - Ejemplo: `evidence/pg-3154/tc-001/`
 - Crear la carpeta si no existe
 
 ### Paso 3: Ejecutar el test con Playwright MCP
 - Seguir las instrucciones del prompt del test case
+- **EJECUTAR** el skill `capture_error_screenshot` ante errores/validaciones críticas
 - **CAPTURAR SCREENSHOTS** en cada error encontrado usando:
   ```
   mcp_playwright_browser_screenshot con path: evidence/{nombre-archivo}/{ticket-id}/{ticket-id}_paso_XX.png
   ```
 
 ### Paso 4: Generar reporte HTML (OBLIGATORIO)
-- Al finalizar el test, SIEMPRE generar el reporte HTML usando el template en `.github/skills/evidence-generator/template-html-base.html`
-- Guardar como: `evidence/{nombre-archivo}/{ticket-id}/{ticket-id}_reporte.html`
-- Incluir todas las capturas de pantalla tomadas durante el test
+- **REGISTRAR** `evidenceEndTime` justo **antes** de generar el reporte.
+- **REGISTRAR** `reportGenerationStartTime` al iniciar la generación del HTML.
+- **EJECUTAR** el skill `generate_html_report` (usa el template `.github/skills/evidence-generator/template-html-base.html`, guarda en `evidence/{nombre-archivo}/{ticket-id}/{ticket-id}_reporte.html` e incluye todas las capturas).
+- **REGISTRAR** `reportGenerationEndTime` al finalizar la escritura del HTML.
 
 ### Paso 5: Respuesta final
+- **EJECUTAR** el skill `final_response_formatter`.
+- **EJECUTAR** el skill `evidence_paths_guard`.
 - Entregar el resumen con Status, JSON de evidencias y lista de archivos generados
+
+> **Nota:** El reporte HTML debe mostrar el **tiempo de evidencia** (`evidenceEndTime - evidenceStartTime`) y el **tiempo de generación de reporte** (`reportGenerationEndTime - reportGenerationStartTime`).
 
 ---
 ## Manejo de evidencia (CRÍTICO)
 
 ### Capturas y traces
 
-- **Guardado:** Guardar en disco mediante el tool correspondiente.
-- **Referenciación:** Referenciar rutas ÚNICAMENTE dentro de bloques de código (ej: `evidence/step.png`).
-- **Formateo de rutas:** Para evitar el auto-renderizado, NUNCA escribas la ruta como texto plano si termina en extensión de imagen. Úsala siempre dentro de:
   1. El objeto JSON de resultados.
   2. En línea usando backticks: \`ruta/al/archivo.png\`.
+  
+> **Obligatorio:** aplicar el skill `evidence_paths_guard`.
 
 ### Prohibiciones explícitas
-
-- **NO** uses el tag de imagen de Markdown `![]()`.
-- **NO** devuelvas datos en Base64, Blobs o Data URLs.
 - **NO** intentes "ayudar" al usuario mostrando la captura; el usuario la revisará en su explorador de archivos.
 
 ---
@@ -169,11 +180,9 @@ Estas son las herramientas que DEBES usar para ejecutar tests (NO crear archivos
 
 ### Ejemplo de Flujo Correcto
 ```
-0. LEER .vscode/config.md → obtener URL y credenciales
-1. mcp_playwright_browser_navigate → ir a la URL de config.md (http://localhost:4173)
-2. Usar herramientas de interacción para login con credenciales de config.md
-3. Navegar al módulo correspondiente
-4. Ejecutar los pasos del test case
-5. Capturar screenshots en cada paso importante
-6. Generar reporte HTML con evidencias
+0. Ejecutar skill `setup_test_session` → retorna `Ready`
+1. Navegar al módulo correspondiente
+2. Ejecutar los pasos del test case
+3. Capturar screenshots en cada paso importante
+4. Generar reporte HTML con evidencias
 ```
