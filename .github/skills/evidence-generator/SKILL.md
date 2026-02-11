@@ -1,12 +1,14 @@
 ---
 name: evidence-generator
-version: 1.1.0
-description: Define carpeta de evidencia jerárquica (Nombre Archivo / Ticket) en evidence
+version: 1.2.0
+description: Define carpeta de evidencia jerárquica (Nombre Archivo / Ticket) en evidence. NO genera código; usa herramientas MCP.
 ---
 
 # Skill: Evidence Generator
 
 Este skill define **dónde guardar** capturas y reporte HTML organizados por el nombre del archivo de definición de pruebas y el ID del ticket.
+
+> ⚠️ **IMPORTANTE:** Este skill define **convenciones de rutas**, NO genera código TypeScript/JavaScript. Las capturas se realizan con herramientas MCP.
 
 ## Regla principal
 
@@ -23,24 +25,25 @@ evidence\agenda\tc001\
 
 ## Convención de nombres de archivos
 
-- Screenshots: `tc001_formulario_completo.png`, `tc001_inspeccion_creada.png`, etc.
+- Screenshots: `tc001_paso_01.png`, `tc001_paso_02.png`, etc.
 - Reporte HTML: `tc001_reporte.html`
+- Reporte PDF: `tc001_reporte.pdf`
 
-## Ejemplo de uso (Playwright MCP)
+## Cómo capturar screenshots (OBLIGATORIO)
+
+### ✅ Método CORRECTO: Usar herramienta MCP
+
+```
+Activar herramientas de captura con: activate_page_capture_tools
+Luego usar la herramienta de screenshot con:
+- filename: evidence/{source-file}/{ticket-id}/{ticket-id}_paso_XX.png
+```
+
+### ❌ Método PROHIBIDO: NO escribir código
 
 ```ts
-const ticketId = 'tc001';
-const sourceFile = 'agenda'; // Basado en agenda.md
-const evidenceDir = `evidence\\${sourceFile}\\${ticketId}`;
-
-// Asegurar carpeta (si no existe)
-// fs.mkdirSync(evidenceDir, { recursive: true });
-
-// Capturas
-await page.screenshot({ path: `${evidenceDir}\\${ticketId}_formulario_completo.png`, fullPage: true });
-
-// Reporte HTML
-const htmlPath = `${evidenceDir}\\${ticketId}_reporte.html`;
+// ❌ NUNCA HACER ESTO - No generar código TypeScript
+await page.screenshot({ path: '...' });
 ```
 
 ## Output requerido
@@ -110,25 +113,18 @@ El template está estructurado con:
 
 ## Uso con Playwright MCP (OBLIGATORIO)
 
-Para capturar screenshots durante la ejecución de un test, usar el tool `mcp_playwright_browser_take_screenshot`.
+> ⚠️ **NO GENERAR CÓDIGO:** Las capturas se realizan con herramientas MCP, NO escribiendo código TypeScript.
 
-> **IMPORTANTE:** El tool de Playwright MCP guarda los archivos relativos a `.playwright-mcp/`. 
-> Para mantener consistencia, después de capturar los screenshots se deben **copiar a la carpeta `evidence/`** antes de generar el reporte HTML.
+Para capturar screenshots durante la ejecución de un test:
+1. Activar herramientas de captura: `activate_page_capture_tools`
+2. Usar la herramienta de screenshot MCP
 
 ### Flujo de captura y unificación:
 
-1. **Capturar** con Playwright MCP (se guardan en `.playwright-mcp/evidence/...`)
+1. **Capturar** con herramienta MCP de screenshot
 2. **Copiar** a la carpeta unificada `evidence/{source-file}/{ticket-id}/`
-3. **Optimizar** imágenes en la carpeta `evidence/`
+3. **Optimizar** imágenes con script `optimize-images.js`
 4. **Generar** reporte HTML en la misma carpeta
-
-### Parámetros del tool:
-
-```
-mcp_playwright_browser_take_screenshot con parámetros:
-- filename: evidence/{source-file}/{ticket-id}/{ticket-id}_paso_XX.png
-- fullPage: true (opcional, para capturar página completa)
-```
 
 ### Comando para copiar imágenes (ejecutar antes del reporte):
 
@@ -143,16 +139,14 @@ Copy-Item -Path ".playwright-mcp\evidence\{source-file}\{ticket-id}\*.png" -Dest
 4. **Validaciones:** Cuando aparecen mensajes de éxito o error
 5. **Final:** Estado final del sistema después de la prueba
 
-### Ejemplo de ejecución completa:
+### Ejemplo de flujo completo:
 
 ```powershell
 # 1. Crear carpeta unificada
 New-Item -ItemType Directory -Force -Path "evidence/pg-3154/tc-001/"
 
-# 2. Ejecutar test y capturar screenshots (Playwright MCP los guarda en .playwright-mcp/)
-#    - tc-001_paso_01_inicio.png
-#    - tc-001_paso_02_formulario_completo.png
-#    - tc-001_paso_03_guardado_exitoso.png
+# 2. Ejecutar test usando herramientas MCP (NO código)
+#    Screenshots capturados via MCP tools
 
 # 3. Copiar imágenes a carpeta unificada
 Copy-Item -Path ".playwright-mcp\evidence\pg-3154\tc-001\*.png" -Destination "evidence\pg-3154\tc-001\" -Force
