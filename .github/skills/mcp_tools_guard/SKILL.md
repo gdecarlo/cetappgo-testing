@@ -13,6 +13,9 @@ Evitar acciones prohibidas antes y durante la ejecución de pruebas.
 - No crear ni modificar `playwright.config.ts`.
 - No ejecutar comandos de testing por CLI (`pnpm test`, `npx playwright test`, etc.).
 - Usar exclusivamente herramientas MCP de Playwright para interacción UI.
+- Prohibido usar **Puppeteer** o ejecutar `node -e`/scripts para generar PDF durante el flujo de tests.
+- Prohibido instalar dependencias para ese fin (`pnpm add -D puppeteer`, `npm i puppeteer`, etc.).
+- La generación de PDF **debe** realizarse solo mediante el skill `generate_pdf_report`.
 
 ## Uso
 Ejecutar este guard **antes** de iniciar cualquier flujo de test.
