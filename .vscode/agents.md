@@ -1,5 +1,39 @@
 # AGENTS.md — Frontend UI Testing (Playwright)
 
+---
+
+## GUARDRAIL GLOBAL #0 (CRÍTICO) — STACK TECNOLÓGICO CERRADO
+
+### ⚠️ RESTRICCIÓN ABSOLUTA DE HERRAMIENTAS
+
+Este proyecto utiliza un **stack tecnológico cerrado y predefinido**. El agente **NO TIENE AUTORIZACIÓN** para:
+
+1. **Instalar dependencias** no listadas en `package.json`
+2. **Usar herramientas externas** como Puppeteer, Selenium, Cypress, WebDriverIO, TestCafe, etc.
+3. **Ejecutar comandos de instalación** (`npm install`, `pnpm add`, `yarn add`) para herramientas de testing
+4. **Proponer alternativas** al stack definido bajo ninguna circunstancia
+
+### ✅ Stack ÚNICO permitido (package.json)
+
+| Dependencia | Uso autorizado |
+|-------------|----------------|
+| `playwright` | Generación de PDF via script `html_to_pdf.js` |
+| `@playwright/test` | **NO usar directamente** — solo referencia |
+| `sharp` | Optimización de imágenes |
+| `glob` | Búsqueda de archivos |
+
+### ❌ Herramientas EXPLÍCITAMENTE PROHIBIDAS
+
+- **Puppeteer** (ni para screenshots, ni para PDF, ni para ningún propósito)
+- **Selenium / WebDriver**
+- **Cypress**
+- **TestCafe**
+- **Cualquier otra librería de automatización de browser**
+
+> **Ante cualquier error o limitación:** El agente debe reportar el problema y solicitar instrucciones, **NUNCA** intentar instalar herramientas alternativas.
+
+---
+
 ## REGLA DE ORO #0 (CRÍTICO) - SETUP DE SESIÓN
 
 **ANTES de ejecutar cualquier prueba, el agente DEBE ejecutar el skill `setup_test_session`.**
@@ -18,11 +52,12 @@ Este skill:
 
 ## Skills auxiliares obligatorios (anti-error)
 
-- `mcp_tools_guard` → Bloquear acciones prohibidas (CLI, `.spec.ts`, `playwright.config.ts`).
+- `stack_guardrail` → **NUEVO** - Verificar que solo se usen herramientas del stack definido.
+- `mcp_tools_guard` → Bloquear acciones prohibidas (CLI, `.spec.ts`, `playwright.config.ts`, Puppeteer).
 - `pre_test_flow_enforcer` → Asegurar setup antes de navegar o interactuar.
 - `validate_test_case_source` → Extraer/validar `ticketId` y `sourceFile` del test case.
 - `ensure_evidence_folder` → Crear `evidence/{sourceFile}/{ticketId}/`.
-- `capture_error_screenshot` → Capturas estandarizadas ante errores.
+- `capture_error_screenshot` → Capturas estandarizadas ante errores (usando MCP, NO código).
 - `time-metrics-enforcer` → Registrar tiempos y exigir su inclusión en el reporte.
 - `generate_html_report` → Reporte HTML final con evidencias.
 - `generate_pdf_report` → PDF del reporte HTML en la misma carpeta.
@@ -153,40 +188,82 @@ La respuesta final DEBE ser un resumen ejecutivo en texto plano que siga este or
 
 ---
 
-## HERRAMIENTAS MCP DE PLAYWRIGHT DISPONIBLES
+## HERRAMIENTAS MCP DE PLAYWRIGHT — LISTA EXHAUSTIVA Y EXCLUSIVA
 
-Estas son las herramientas que DEBES usar para ejecutar tests (NO crear archivos .spec.ts):
+> ⚠️ **CRÍTICO:** Las siguientes herramientas son las **ÚNICAS** permitidas para interacción con el browser. NO se permite usar Puppeteer, Selenium, Cypress, ni ninguna otra herramienta de automatización.
 
 ### Navegación y Control del Browser
-- `mcp_playwright_browser_navigate` - Navegar a una URL
-- `mcp_playwright_browser_navigate_back` - Volver a la página anterior
-- `mcp_playwright_browser_close` - Cerrar el navegador
-- `mcp_playwright_browser_tabs` - Gestionar pestañas
+| Herramienta | Descripción | Uso |
+|-------------|-------------|-----|
+| `mcp_playwright_browser_navigate` | Navegar a una URL | ✅ Obligatorio |
+| `mcp_playwright_browser_navigate_back` | Volver a la página anterior | ✅ Permitido |
+| `mcp_playwright_browser_tabs` | Gestionar pestañas | ✅ Permitido |
 
 ### Interacción con Elementos
-- `mcp_playwright_browser_click` - Hacer clic en elementos
-- `mcp_playwright_browser_select_option` - Seleccionar opciones en dropdowns
-- `mcp_playwright_browser_press_key` - Presionar teclas
-- `mcp_playwright_browser_drag` - Arrastrar elementos
-- `mcp_playwright_browser_handle_dialog` - Manejar diálogos/modales
+| Herramienta | Descripción | Uso |
+|-------------|-------------|-----|
+| `mcp_playwright_browser_click` | Hacer clic en elementos | ✅ Obligatorio |
+| `mcp_playwright_browser_select_option` | Seleccionar opciones en dropdowns | ✅ Permitido |
+| `mcp_playwright_browser_press_key` | Presionar teclas | ✅ Permitido |
+| `mcp_playwright_browser_drag` | Arrastrar elementos | ✅ Permitido |
+| `mcp_playwright_browser_handle_dialog` | Manejar diálogos/modales | ✅ Permitido |
 
 ### Captura de Evidencia
-- `activate_page_capture_tools` - Activar herramientas de captura (screenshots, accessibility snapshots)
-- `activate_form_and_file_management_tools` - Activar herramientas de formularios
+| Herramienta | Descripción | Uso |
+|-------------|-------------|-----|
+| `activate_page_capture_tools` | Activar herramientas de captura | ✅ Obligatorio |
+| `activate_form_and_file_management_tools` | Activar herramientas de formularios | ✅ Permitido |
 
 ### Esperas y Sincronización
-- `mcp_playwright_browser_wait_for` - Esperar por texto o tiempo
+| Herramienta | Descripción | Uso |
+|-------------|-------------|-----|
+| `mcp_playwright_browser_wait_for` | Esperar por texto o tiempo | ✅ Permitido |
 
 ### Debugging
-- `mcp_playwright_browser_console_messages` - Ver mensajes de consola
-- `mcp_playwright_browser_network_requests` - Ver requests de red
-- `mcp_playwright_browser_evaluate` - Ejecutar JavaScript en la página
+| Herramienta | Descripción | Uso |
+|-------------|-------------|-----|
+| `mcp_playwright_browser_console_messages` | Ver mensajes de consola | ✅ Permitido |
+| `mcp_playwright_browser_network_requests` | Ver requests de red | ✅ Permitido |
+| `mcp_playwright_browser_evaluate` | Ejecutar JavaScript en la página | ✅ Permitido (solo para limpieza de storage) |
+
+### Scripts Node.js Autorizados (NO herramientas de browser)
+| Script | Ruta | Propósito |
+|--------|------|-----------|
+| `html_to_pdf.js` | `.github/skills/generate_pdf_report/scripts/html_to_pdf.js` | Generar PDF desde HTML |
+| `optimize-images.js` | `.github/skills/optimize-images/optimize-images.js` | Optimizar imágenes |
 
 ### Ejemplo de Flujo Correcto
 ```
 0. Ejecutar skill `setup_test_session` → retorna `Ready`
-1. Navegar al módulo correspondiente
-2. Ejecutar los pasos del test case
-3. Capturar screenshots en cada paso importante
-4. Generar reporte HTML con evidencias
+1. Navegar al módulo correspondiente con `mcp_playwright_browser_navigate`
+2. Ejecutar los pasos del test case con herramientas MCP
+3. Capturar screenshots con `activate_page_capture_tools`
+4. Optimizar imágenes con script `optimize-images.js`
+5. Generar reporte HTML
+6. Generar PDF con script `html_to_pdf.js`
+```
+
+---
+
+## MANEJO DE ERRORES Y LIMITACIONES
+
+### Ante cualquier error durante la ejecución:
+
+1. **DETENER** la ejecución inmediatamente
+2. **CAPTURAR** screenshot del estado actual (si es posible)
+3. **REGISTRAR** el error en el reporte
+4. **REPORTAR** al usuario con detalle del problema
+5. **NUNCA** intentar instalar herramientas alternativas
+
+### Errores que NO justifican instalación de dependencias:
+- Timeout de elementos
+- Elementos no encontrados
+- Errores de red
+- Errores de JavaScript en la página
+- Cualquier error de Playwright MCP
+
+### Respuesta correcta ante limitaciones:
+```
+❌ INCORRECTO: "Voy a instalar Puppeteer para solucionar este problema"
+✅ CORRECTO: "Se encontró un error: [detalle]. Por favor, verifica [sugerencia] o indica cómo proceder."
 ```
