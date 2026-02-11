@@ -21,6 +21,7 @@ Además, incluir métricas de tiempo:
 	- `evidenceDurationMs` y `evidenceDurationHuman`
 	- `reportGenerationDurationMs` y `reportGenerationDurationHuman`
 5. Guardar el HTML en la carpeta de evidencia.
+6. Eliminar evidencias temporales en `.playwright-mcp/evidence/` **solo después** de confirmar que las evidencias finales ya fueron generadas en `evidence/`.
 
 ## Entrada mínima
 - `ticketId`, `ticketTitle`, `status`
