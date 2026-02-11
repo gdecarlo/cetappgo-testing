@@ -4,8 +4,8 @@
   "description": "Este repositorio contiene la documentación y configuración necesaria para realizar pruebas E2E y de UI para la aplicación **CetApp Go**. A continuación se detalla la función de cada archivo y directorio importante encontrado en la configuración.",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test",
-    "test:headed": "playwright test --headed"
+    "optimize-images": "node .github/skills/optimize-images/optimize-images.js",
+    "html-to-pdf": "node .github/skills/generate_pdf_report/scripts/html_to_pdf.js"
   },
   "keywords": [],
   "author": "",
