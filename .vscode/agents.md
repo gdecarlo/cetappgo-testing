@@ -23,7 +23,9 @@ Este skill:
 - `validate_test_case_source` → Extraer/validar `ticketId` y `sourceFile` del test case.
 - `ensure_evidence_folder` → Crear `evidence/{sourceFile}/{ticketId}/`.
 - `capture_error_screenshot` → Capturas estandarizadas ante errores.
+- `time-metrics-enforcer` → Registrar tiempos y exigir su inclusión en el reporte.
 - `generate_html_report` → Reporte HTML final con evidencias.
+- `generate_pdf_report` → PDF del reporte HTML en la misma carpeta.
 - `final_response_formatter` → Respuesta final con Status/JSON/archivos.
 - `evidence_paths_guard` → Evitar renderizado de imágenes en el chat.
 
@@ -80,6 +82,7 @@ Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre e
 
 ### Paso 0: Setup de sesión (OBLIGATORIO)
 - **REGISTRAR** `evidenceStartTime` al momento de recibir el pedido del usuario.
+- **EJECUTAR** el skill `time-metrics-enforcer`.
 - **EJECUTAR** el skill `mcp_tools_guard`.
 - **EJECUTAR** el skill `pre_test_flow_enforcer`.
 - **EJECUTAR** el skill `setup_test_session`.
@@ -110,6 +113,7 @@ Cuando el usuario solicite ejecutar un test case (ej: "ejecuta TC-001", "corre e
 - **REGISTRAR** `reportGenerationStartTime` al iniciar la generación del HTML.
 - **EJECUTAR** el skill `generate_html_report` (usa el template `.github/skills/evidence-generator/template-html-base.html`, guarda en `evidence/{nombre-archivo}/{ticket-id}/{ticket-id}_reporte.html` e incluye todas las capturas).
 - **REGISTRAR** `reportGenerationEndTime` al finalizar la escritura del HTML.
+- **EJECUTAR** el skill `generate_pdf_report` para generar `evidence/{nombre-archivo}/{ticket-id}/{ticket-id}_reporte.pdf` en la misma carpeta.
 
 ### Paso 5: Respuesta final
 - **EJECUTAR** el skill `final_response_formatter`.
