@@ -20,6 +20,7 @@ crear el repo de azure.
 data-testid desde la construccion del front para simplificar la referencia a los elementos.
 referenciar el ticket d ejira mediante un link en la evidencia.
 
+configurar el pedido de permisos de comandos de los mcp.
 
 issues
 
