@@ -32,3 +32,13 @@
 ---
 
 **Crear archivo con la salida:** En la carpeta {{TEST_CASES_FOLDER}} crea el archivo con el nombre del {{TEST_ID}}.md
+
+---
+
+## Uso rápido por ticket
+
+Usa las instrucciones anteriores para generar los casos de prueba reemplazando `{{TEST_ID}}` por `PG-XXXX`. No tomes como ejemplo un archivo ya generado.
+
+## Ejecución de evidencia por TC
+
+Ejecutá el test `TC-XXX` del ticket `PG-XXXX` siguiendo el flujo MCP definido en `.vscode/agents.md`.
