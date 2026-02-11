@@ -1,6 +1,6 @@
 # Documentación del Repositorio de Pruebas - CetApp Go
 
-Este repositorio contiene la documentación, configuración y herramientas necesarias para realizar pruebas E2E y de UI para la aplicación **CetApp Go** utilizando Playwright y Agentes de IA.
+Este repositorio contiene la documentación, configuración y herramientas necesarias para ejecutar pruebas E2E/UI de **CetApp Go** con **Playwright MCP** y agentes de IA.
 
 ## Estructura de Archivos
 
@@ -9,6 +9,12 @@ Este repositorio contiene la documentación, configuración y herramientas neces
 - **`agents.md`**
   - **Función:** Define las reglas de comportamiento y directrices para los agentes de IA (como GitHub Copilot o agentes de Playwright).
   - **Detalle:** Incluye reglas críticas como la prohibición de renderizar imágenes en el chat y el enfoque en logs de texto y estructuras JSON.
+
+- **`config.md`**
+  - **Función:** Fuente única de URLs, credenciales y selectores de login por ambiente.
+
+- **`mcp.json`**
+  - **Función:** Configuración de herramientas MCP para Playwright.
 
 - **`cetappgo-code-summary.md`**
   - **Función:** Resumen técnico de la base de código de "CetApp Go".
@@ -22,6 +28,9 @@ Este repositorio contiene la documentación, configuración y herramientas neces
   - **Función:** Instrucciones para la ejecución de pruebas.
   - **Detalle:** Protocolos de login, URLs de entornos y manejo de credenciales.
 
+- **`test-cases/`**
+  - **Función:** Casos de prueba en formato markdown, consumidos por los agentes.
+
 ### Habilidades de Agentes (.github/skills/)
 
 Estas "skills" son extensiones funcionales que permiten a los agentes realizar tareas complejas de forma autónoma.
@@ -32,32 +41,69 @@ Estas "skills" son extensiones funcionales que permiten a los agentes realizar t
 
 - **`evidence-generator`**
   - **Función:** Gestión estructurada de evidencia.
-  - **Detalle:** Define y organiza la carpeta de evidencia jerárquica (por Nombre de Archivo / Ticket) dentro de `.playwright-mcp/evidence`.
+  - **Detalle:** Define la estructura jerárquica de evidencia (por Nombre de Archivo / Ticket).
+
+- **`ensure_evidence_folder`**
+  - **Función:** Crea la carpeta de evidencia antes de ejecutar tests.
+
+- **`capture_error_screenshot`**
+  - **Función:** Capturas estandarizadas ante errores o validaciones críticas.
+
+- **`generate_html_report`**
+  - **Función:** Generación de reporte HTML final con evidencias.
+
+- **`final_response_formatter`**
+  - **Función:** Respuesta final estándar con Status/JSON/archivos.
+
+- **`mcp_tools_guard`**
+  - **Función:** Bloquea acciones prohibidas (CLI, `.spec.ts`, `playwright.config.ts`).
+
+- **`pre_test_flow_enforcer`**
+  - **Función:** Enforce de setup antes de navegar o interactuar.
+
+- **`setup_test_session`**
+  - **Función:** Setup de sesión (lee `config.md`, limpia storage, login, retorna Ready).
+
+- **`validate_test_case_source`**
+  - **Función:** Valida origen del caso de prueba y extrae `ticketId`/`sourceFile`.
+
+- **`evidence_paths_guard`**
+  - **Función:** Evita renderizado de imágenes en chat.
 
 - **`optimize-images`**
   - **Función:** Optimización automática de recursos visuales.
   - **Detalle:** Reduce el tamaño de imágenes PNG/JPG generadas como evidencia sin perder calidad visual. Se utiliza típicamente antes de generar reportes.
 
+- **`generate_test_report`**
+  - **Función:** Generación de reporte estructurado a partir de evidencia.
+
+- **`test-cases-from-jira`**
+  - **Función:** Generación de casos de prueba desde tickets Jira.
+
 - **`readme`**
   - **Función:** Mantenimiento de documentación.
   - **Detalle:** Pautas para mantener este archivo README.md actualizado y sincronizado con la estructura del proyecto.
-
-- **`test-login`**
-  - **Función:** Flujo de autenticación reutilizable.
-  - **Detalle:** Contiene la lógica automatizada para realizar el login en CetApp Go, sirviendo como pre-condición para otros tests.
 
 ### Prompts de Ingeniería (prompts/)
 
 Plantillas diseñadas para obtener los mejores resultados de los modelos de IA.
 
-- **`generar-casos-con-rovo.md`**
-  - **Función:** Prompt maestro para generación de tests.
-  - **Detalle:** Guía al agente para actuar como un QA Automation Senior, analizando Historias de Usuario y generando tablas de casos de prueba formateadas correctamente con enfoque en Playwright.
+- **`generar-casos-desde-jira.md`**
+  - **Función:** Prompt maestro para generar casos desde Jira.
 
-### Configuración MCP (.playwright-mcp/)
+- **`generar-casos-por-ticket`**
+  - **Función:** Prompt para generar casos a partir de un ticket específico.
+
+- **`generar-evidencia-por-TC`**
+  - **Función:** Prompt para generar evidencia por caso de prueba.
+
+### Evidencia (.playwright-mcp/ y evidence/)
+
+- **`.playwright-mcp/evidence/`**
+  - Área temporal usada por Playwright MCP para capturas.
 
 - **`evidence/`**
-  - Directorio destino donde se almacenan capturas, videos y trazas de las pruebas ejecutadas, estructuradas por el skill `evidence-generator`.
+  - Carpeta final de evidencias, reportes HTML y resultados consolidados.
 
 ## Instalación y Uso
 
@@ -78,15 +124,7 @@ Plantillas diseñadas para obtener los mejores resultados de los modelos de IA.
 
 ### Ejecución de Pruebas
 
-Para ejecutar las pruebas configuradas con Playwright:
-
-```bash
-# Ejecutar todas las pruebas en modo headless
-npm test
-
-# Ejecutar pruebas viendo el navegador
-npm run test:headed
-```
+Las pruebas se ejecutan **exclusivamente** con Playwright MCP y el flujo definido en [./.vscode/agents.md](.vscode/agents.md). No se utilizan comandos CLI de Playwright en este repositorio.
 
 ---
-*Documentación actualizada automáticamente.*
+*Documentación actualizada para el flujo MCP y skills vigentes.*
