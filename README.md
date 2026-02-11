@@ -2,6 +2,14 @@
 
 Este repositorio contiene la documentación, configuración y herramientas necesarias para ejecutar pruebas E2E/UI de **CetApp Go** con **Playwright MCP** y agentes de IA.
 
+## Inicio rápido (no técnico)
+
+### 1) Generar casos desde Jira
+“Generá casos de prueba E2E para el ticket **PG-XXXX** usando el prompt de **prompts/generar-casos-desde-jira.md**. Guardá el resultado en **.vscode/test-cases/PG-XXXX.md**.”
+
+### 2) Ejecutar casos y generar evidencia
+“Ejecutá los casos de prueba del archivo **PG-XXXX**. Corré **TC-001** y **TC-002** en orden. Seguí el flujo obligatorio del proyecto (setup de sesión, validación de origen, carpeta de evidencia, ejecución con MCP, capturas, reporte HTML y respuesta final). Reportá Pass/Fail con evidencias.”
+
 ## Estructura de Archivos
 
 ### Configuración e Instrucciones (.vscode/)
@@ -74,9 +82,6 @@ Estas "skills" son extensiones funcionales que permiten a los agentes realizar t
   - **Función:** Optimización automática de recursos visuales.
   - **Detalle:** Reduce el tamaño de imágenes PNG/JPG generadas como evidencia sin perder calidad visual. Se utiliza típicamente antes de generar reportes.
 
-- **`generate_test_report`**
-  - **Función:** Generación de reporte estructurado a partir de evidencia.
-
 - **`test-cases-from-jira`**
   - **Función:** Generación de casos de prueba desde tickets Jira.
 
@@ -89,13 +94,7 @@ Estas "skills" son extensiones funcionales que permiten a los agentes realizar t
 Plantillas diseñadas para obtener los mejores resultados de los modelos de IA.
 
 - **`generar-casos-desde-jira.md`**
-  - **Función:** Prompt maestro para generar casos desde Jira.
-
-- **`generar-casos-por-ticket`**
-  - **Función:** Prompt para generar casos a partir de un ticket específico.
-
-- **`generar-evidencia-por-TC`**
-  - **Función:** Prompt para generar evidencia por caso de prueba.
+  - **Función:** Prompt maestro para generar casos desde Jira, con secciones de uso rápido por ticket y ejecución de evidencia por TC.
 
 ### Evidencia (.playwright-mcp/ y evidence/)
 
