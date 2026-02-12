@@ -16,6 +16,19 @@ description: Generar casos de prueba E2E desde tickets Jira con formato Playwrig
 4. Generar los casos de prueba con el formato indicado en el archivo de instrucciones.
 5. Crear el archivo en `.vscode/test-cases` con el nombre `PG-XXXX.md`.
 6. Incluir en el archivo generado una línea explícita: **ambiente de pruebas: test X** (usar el número detectado).
+7. Crear la carpeta de evidencia `evidence/PG-XXXX/` si no existe.
+8. Generar el archivo `evidence/PG-XXXX/raw-test-cases.md` con la siguiente estructura lista para copiar y pegar en el comentario del ticket Jira:
+
+   ```markdown
+   Historia de Usuario: [Titulo de la HU]
+
+   Ambiente: test X
+
+   Lista de Test Cases
+   TC-001 - [Titulo del TC]
+   TC-002 - [Titulo del TC]
+   TC-003 - [Titulo del TC]
+   ```
 
 ## Reglas
 

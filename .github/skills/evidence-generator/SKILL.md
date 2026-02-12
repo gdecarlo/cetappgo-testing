@@ -29,6 +29,10 @@ evidence\agenda\tc001\
 - Reporte HTML: `tc001_reporte.html`
 - Reporte PDF: `tc001_reporte.pdf`
 
+> **Nota:** Los archivos de comentarios para Jira se generan en otros momentos del flujo:
+> - `raw-test-cases.md` se genera con el skill `test-cases-from-jira`
+> - `raw-{TC_ID}-result.md` se genera con el skill `generate_html_report`
+
 ## Cómo capturar screenshots (OBLIGATORIO)
 
 ### ✅ Método CORRECTO: Usar herramienta MCP
@@ -124,7 +128,9 @@ Para capturar screenshots durante la ejecución de un test:
 1. **Capturar** con herramienta MCP de screenshot
 2. **Copiar** a la carpeta unificada `evidence/{source-file}/{ticket-id}/`
 3. **Optimizar** imágenes con script `optimize-images.js`
-4. **Generar** reporte HTML en la misma carpeta
+4. **Generar** reporte HTML y PDF con skill `generate_html_report`
+
+> Los archivos de comentarios Jira se generan automáticamente por otros skills.
 
 ### Comando para copiar imágenes (ejecutar antes del reporte):
 
@@ -163,9 +169,13 @@ node .github/skills/optimize-images/optimize-images.js evidence/pg-3154/tc-001
 ```
 evidence/
 └── pg-3154/
+    ├── raw-test-cases.md          # Generado por test-cases-from-jira
     └── tc-001/
         ├── tc-001_paso_01_inicio.png
         ├── tc-001_paso_02_formulario_completo.png
         ├── tc-001_paso_03_guardado_exitoso.png
-        └── tc-001_reporte.html
+        ├── tc-001_reporte.html
+        ├── tc-001_reporte.pdf
+        └── raw-tc-001-result.md    # Generado por generate_html_report
 ```
+````

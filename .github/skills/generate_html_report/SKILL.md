@@ -22,7 +22,25 @@ Además, incluir métricas de tiempo:
 	- `reportGenerationDurationMs` y `reportGenerationDurationHuman`
 5. Guardar el HTML en la carpeta de evidencia.
 6. Ejecutar el skill `generate_pdf_report` para crear el PDF en la misma carpeta del HTML.
-7. Eliminar evidencias temporales en `.playwright-mcp/evidence/` **solo después** de confirmar que las evidencias finales ya fueron generadas en `evidence/`.
+7. Generar el archivo `raw-{TC_ID}-result.md` en `evidence/{ticketId}/{TC_ID}/` con el resultado de la prueba formateado para copiar y pegar en un comentario de Jira, usando la siguiente estructura:
+
+   ```markdown
+   Historia de Usuario: [Titulo de la HU]
+
+   Ambiente: test X
+
+   Resultado de Prueba:
+   {TC_ID} - [Titulo del TC] - ✅ PASS / ❌ FAIL
+
+   Validaciones:
+   ✓ [Validación 1]
+   ✓ [Validación 2]
+   ...
+
+   Fecha de ejecución: DD de Mes de AAAA
+   ```
+
+8. Eliminar evidencias temporales en `.playwright-mcp/evidence/` **solo después** de confirmar que las evidencias finales ya fueron generadas en `evidence/`.
 
 ## Entrada mínima
 - `ticketId`, `ticketTitle`, `status`
