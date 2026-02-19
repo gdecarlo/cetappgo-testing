@@ -54,6 +54,10 @@ el que diga el caso de prueba.
 - **Usuario:** `superusuario@cetapsa.com`
 - **Password:** `Cetap!2017`
 
+
+### Super Administrador (solo si se requiere explícitamente)
+- **Usuario:** `llara@cetapsa.com`
+- **Password:** `12345678`
 ---
 
 ## 🧭 Seleccion de usuario segun permisos/modulos
