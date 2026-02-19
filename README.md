@@ -2,13 +2,13 @@
 
 Este repositorio contiene la documentación, configuración y herramientas necesarias para ejecutar pruebas E2E/UI de **CetApp Go** con **Playwright MCP** y agentes de IA.
 
-## Inicio rápido (no técnico)
+## Inicio rapido (no tecnico)
 
 ### 1) Generar casos desde Jira
-“Generá casos de prueba E2E para el ticket **PG-XXXX** usando el prompt de **prompts/generar-casos-desde-jira.md**. Guardá el resultado en **.vscode/test-cases/PG-XXXX.md**.”
+Genera los casos de prueba para el ticket PG-XXXX
 
-### 2) Ejecutar casos y generar evidencia
-“Ejecutá los casos de prueba del archivo **PG-XXXX**. Corré **TC-001** y **TC-002** en orden. Seguí el flujo obligatorio del proyecto (setup de sesión, validación de origen, carpeta de evidencia, ejecución con MCP, capturas, reporte HTML y respuesta final). Reportá Pass/Fail con evidencias.”
+### 2) Ejecutar un caso
+Ejecuta el TC-XXX
 
 ## Estructura de Archivos
 
@@ -60,6 +60,10 @@ Estas "skills" son extensiones funcionales que permiten a los agentes realizar t
 - **`generate_html_report`**
   - **Función:** Generación de reporte HTML final con evidencias.
 
+- **`generate_pdf_report`**
+  - **Función:** Generación de reporte PDF a partir de un HTML existente.
+  - **Detalle:** Usa el script oficial y guarda el PDF en la misma carpeta.
+
 - **`final_response_formatter`**
   - **Función:** Respuesta final estándar con Status/JSON/archivos.
 
@@ -71,6 +75,10 @@ Estas "skills" son extensiones funcionales que permiten a los agentes realizar t
 
 - **`setup_test_session`**
   - **Función:** Setup de sesión (lee `config.md`, limpia storage, login, retorna Ready).
+
+- **`stack_guardrail`**
+  - **Función:** Guardrail global del stack tecnológico permitido.
+  - **Detalle:** Bloquea herramientas, comandos y dependencias fuera de la lista autorizada.
 
 - **`validate_test_case_source`**
   - **Función:** Valida origen del caso de prueba y extrae `ticketId`/`sourceFile`.
@@ -84,6 +92,10 @@ Estas "skills" son extensiones funcionales que permiten a los agentes realizar t
 
 - **`test-cases-from-jira`**
   - **Función:** Generación de casos de prueba desde tickets Jira.
+
+- **`time-metrics-enforcer`**
+  - **Función:** Registro de tiempos de evidencia y de generacion de reportes.
+  - **Detalle:** Exige metricas en HTML/PDF (inicio, fin y duraciones).
 
 - **`readme`**
   - **Función:** Mantenimiento de documentación.
