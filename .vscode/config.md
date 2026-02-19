@@ -48,12 +48,24 @@ el que diga el caso de prueba.
 ### Usuario con permisos para gestion de acciones
 - **Usuario:** `mvasquez@cetapsa.com`
 - **Password:** `1234567891`
+    Permisos: visualizar una accion, crear una accion, editar una accion, eliminar una accion
 
 ### Super Usuario (solo si se requiere explícitamente)
 - **Usuario:** `superusuario@cetapsa.com`
 - **Password:** `Cetap!2017`
 
 ---
+
+## 🧭 Seleccion de usuario segun permisos/modulos
+
+Usar siempre el usuario que coincida con los permisos o modulo requeridos por el caso de prueba.
+Solo usar el usuario por defecto cuando el caso de prueba no indique permisos/modulos especiales.
+
+### Reglas rapidas
+- Si el caso requiere gestionar acciones (ver/crear/editar/eliminar), usar **Usuario con permisos para gestion de acciones**.
+- Si el caso requiere permisos elevados o tareas administrativas, usar **Super Usuario**.
+- Si el caso no indica permisos especiales, usar **Usuario de Pruebas (por defecto)**.
+- Si el caso indica que el usuario por defecto no funciona, usar **Usuario de Pruebas alternativo**.
 
 ## 📋 Selectores de Login
 

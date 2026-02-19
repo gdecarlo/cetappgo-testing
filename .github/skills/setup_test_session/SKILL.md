@@ -16,7 +16,7 @@ Preparar una sesión de pruebas lista para ejecutar casos.
 3. Determinar el ambiente de pruebas:
    - Si el test case indica `ambiente de pruebas: test 1` o `test 2`, usar ese ambiente.
    - Si no hay ambiente explícito, usar la URL por defecto (local).
-4. Seleccionar la URL y credenciales correspondientes del archivo. Seleccionar el usuario de pruebas por defecto, a menos que el caso de prueba requiera un usuario específico (ej: superusuario o usuario con permisos para algo específico).
+4. Seleccionar la URL y credenciales correspondientes del archivo. Elegir el usuario segun permisos/modulos requeridos por el caso de prueba (ver reglas en .vscode/config.md). Usar el usuario por defecto solo si no hay permisos/modulos especiales.
 5. Abrir el browser y navegar a la URL seleccionada usando `mcp_playwright_browser_navigate`.
 6. Limpiar `localStorage` y `sessionStorage` usando `mcp_playwright_browser_evaluate`.
 7. Recargar la página para forzar la pantalla de login.
