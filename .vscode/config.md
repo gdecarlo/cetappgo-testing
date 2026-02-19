@@ -32,6 +32,9 @@ el que diga el caso de prueba.
 - **Usuario:** `superusuario@cetapsa.com`
 - **Password:** `Cetap!2017`
 
+
+
+
 ## 🔐 Credenciales entorno testing 1 y 2
 
 ### Usuario de Pruebas (por defecto)
@@ -42,6 +45,9 @@ el que diga el caso de prueba.
 - **Usuario:** `cmartinez@cetapsa.com`
 - **Password:** `12345678`
 
+### Usuario con permisos para gestion de acciones
+- **Usuario:** `mvasquez@cetapsa.com`
+- **Password:** `1234567891`
 
 ### Super Usuario (solo si se requiere explícitamente)
 - **Usuario:** `superusuario@cetapsa.com`
