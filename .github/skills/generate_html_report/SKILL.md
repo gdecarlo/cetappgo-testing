@@ -42,6 +42,20 @@ Además, incluir métricas de tiempo:
 
 8. Eliminar evidencias temporales en `.playwright-mcp/evidence/` **solo después** de confirmar que las evidencias finales ya fueron generadas en `evidence/`.
 
+## Script CLI
+
+Uso recomendado para generar el HTML y el archivo raw desde un JSON de entrada:
+
+```powershell
+node .github/skills/generate_html_report/generate_html_report.js --input "ruta/a/input.json"
+```
+
+Opcionales:
+- `--output`: ruta del HTML (por defecto `evidence/{sourceFile}/{ticketId}/{ticketId}_reporte.html`).
+- `--template`: template base (por defecto `.github/skills/evidence-generator/template-html-base.html`).
+
+El JSON de entrada debe incluir los campos definidos en "Entrada minima".
+
 ## Entrada mínima
 - `ticketId`, `ticketTitle`, `status`
 - `sourceFile`, `evidenceDir`

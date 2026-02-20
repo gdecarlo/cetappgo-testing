@@ -1,0 +1,47 @@
+{
+  "ticketId": "TC-001",
+  "ticketTitle": "Validar alta de usuario",
+  "testCaseTitle": "TC-001 - Alta de usuario",
+  "status": "PASS",
+  "sourceFile": "pg-9999",
+  "environment": "CetApp GO - Test 1",
+  "baseUrl": "https://test.cetappgo.local",
+  "user": "qa.user",
+  "objective": "Verificar que un usuario se puede crear con datos validos",
+  "steps": [
+    {
+      "title": "Abrir formulario",
+      "description": "Ingresar al modulo de usuarios"
+    },
+    {
+      "title": "Completar campos",
+      "description": "Completar nombre, email y rol"
+    }
+  ],
+  "validations": [
+    "Se muestra mensaje de alta exitosa",
+    "El usuario aparece en la grilla"
+  ],
+  "testData": {
+    "name": "Juan Perez",
+    "email": "juan.perez@example.com",
+    "role": "Admin"
+  },
+  "response": {
+    "id": 1234,
+    "message": "Usuario creado"
+  },
+  "consoleErrors": [],
+  "evidenceImages": [
+    {
+      "title": "Formulario completo",
+      "description": "Datos cargados antes de guardar",
+      "path": "evidence/pg-9999/TC-001/TC-001_paso_01.png",
+      "alt": "Formulario completo"
+    }
+  ],
+  "evidenceStartTime": "2026-02-20T15:00:00.000Z",
+  "evidenceEndTime": "2026-02-20T15:05:12.000Z",
+  "reportGenerationStartTime": "2026-02-20T15:05:12.500Z",
+  "reportGenerationEndTime": "2026-02-20T15:05:12.900Z"
+}
