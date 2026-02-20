@@ -22,48 +22,42 @@ el que diga el caso de prueba.
 
 ---
 
-## 🔐 Credenciales entorno local
+## 🔐 Credenciales por ambiente (desde .env)
 
-### Usuario de Pruebas (por defecto)
-- **Usuario:** `fpandullo@cetapsa.com`
-- **Password:** `Cetap!2017`
+Las credenciales **no se versionan**. Se cargan desde un archivo `.env` local.
+Usar `.env.example` como plantilla.
 
-### Super Usuario (solo si se requiere explícitamente)
-- **Usuario:** `superusuario@cetapsa.com`
-- **Password:** `Cetap!2017`
+### Roles disponibles (role-id)
+- `default` (Usuario de Pruebas)
+- `alternate` (Usuario de Pruebas alternativo)
+- `gestion` (Permisos de gestion de acciones)
+- `super` (Super Usuario)
+- `super_admin` (Super Administrador)
 
+### Convencion de variables
+Formato: `{ENV}_USER_{ROLE}` y `{ENV}_PASS_{ROLE}`
 
+`ENV` admitidos: `LOCAL`, `TEST1`, `TEST2`
 
+Ejemplos:
+- `LOCAL_USER_DEFAULT`, `LOCAL_PASS_DEFAULT`
+- `TEST1_USER_GESTION`, `TEST1_PASS_GESTION`
+- `TEST2_USER_SUPER_ADMIN`, `TEST2_PASS_SUPER_ADMIN`
 
-## 🔐 Credenciales entorno testing 1 y 2
+> ⚠️ Si falta el usuario solicitado, se debe **re-preguntar** al usuario para elegir otro rol.
 
-### Usuario de Pruebas (por defecto)
-- **Usuario:** `nurkazambrano@gmail.com`
-- **Password:** `1234567890`
-
-### Usuario de Pruebas alternativo(por si no funciona el por defecto)
-- **Usuario:** `cmartinez@cetapsa.com`
-- **Password:** `12345678`
-
-### Usuario con permisos para gestion de acciones
-- **Usuario:** `mvasquez@cetapsa.com`
-- **Password:** `1234567891`
-    Permisos: visualizar una accion, crear una accion, editar una accion, eliminar una accion
-
-### Super Usuario (solo si se requiere explícitamente)
-- **Usuario:** `superusuario@cetapsa.com`
-- **Password:** `Cetap!2017`
-
-
-### Super Administrador (solo si se requiere explícitamente)
-- **Usuario:** `llara@cetapsa.com`
-- **Password:** `12345678`
 ---
 
 ## 🧭 Seleccion de usuario segun permisos/modulos
 
 Usar siempre el usuario que coincida con los permisos o modulo requeridos por el caso de prueba.
 Solo usar el usuario por defecto cuando el caso de prueba no indique permisos/modulos especiales.
+
+### Declaracion opcional en el test case
+El test case puede incluir una linea:
+`usuario: <role-id>`
+
+Si esta presente, se toma como sugerencia inicial y se permite override interactivo al ejecutar.
 
 ### Reglas rapidas
 - Si el caso requiere gestionar acciones (ver/crear/editar/eliminar), usar **Usuario con permisos para gestion de acciones**.
