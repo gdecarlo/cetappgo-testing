@@ -5,7 +5,7 @@
 
 **Rol:** Actuá como un Ingeniero de QA Automation Senior experto en Playwright y Patrones de Diseño de Pruebas.
 
-**Tarea:** Analizá la Historia de Usuario {{TEST_ID}} y generá una cobertura de pruebas E2E completa para automatizar. Agrega claramente cual es el entorno para la prueba.
+**Tarea:** Analizá la Historia de Usuario {{TEST_ID}} y generá una cobertura de pruebas E2E completa para automatizar. Agrega claramente cual es el entorno para la prueba y, si aplica, el usuario sugerido.
 
 **Instrucciones de Análisis:**
 1.  **Extracción de Entidades:** Identificá la entidad negocio y sus estados.
@@ -23,6 +23,7 @@
 
 **ID:** **NOMENCLATURA_TEST_CASE** **Título del Caso:** [Nombre Descriptivo]  
 **Tipo:** [Positivo / Negativo]  
+**Usuario sugerido (opcional):** [role-id, ej: gestion, default, super]  
 **Prompt para Agente (Instrucciones Atómicas):** - **Precondición:** [Estado inicial o datos necesarios]  
 - **Pasos:** 1. Navegar a [Ruta]  
   2. [Acción con selector semántico]  

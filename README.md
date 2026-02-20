@@ -19,7 +19,8 @@ Ejecuta el TC-XXX
   - **Detalle:** Incluye reglas críticas como la prohibición de renderizar imágenes en el chat y el enfoque en logs de texto y estructuras JSON.
 
 - **`config.md`**
-  - **Función:** Fuente única de URLs, credenciales y selectores de login por ambiente.
+  - **Función:** Fuente única de URLs, roles y selectores de login por ambiente. Las credenciales se leen desde `.env` (no versionado).
+  - **Nota:** Usar `.env.example` como plantilla.
 
 - **`mcp.json`**
   - **Función:** Configuración de herramientas MCP para Playwright.
