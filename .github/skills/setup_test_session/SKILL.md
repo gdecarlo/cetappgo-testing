@@ -19,9 +19,10 @@ Preparar una sesión de pruebas lista para ejecutar casos.
 4. Determinar el rol de usuario:
    - Si el test case incluye `usuario: <role-id>`, usarlo como sugerencia inicial.
    - Si no hay `usuario`, inferir por permisos/modulos segun reglas de `.vscode/config.md`.
-   - Mostrar un prompt interactivo (ask_questions) para que el usuario confirme o haga override del rol.
 5. Resolver credenciales desde `.env` usando la convencion `{ENV}_USER_{ROLE}` y `{ENV}_PASS_{ROLE}`.
    - Si faltan credenciales para el rol seleccionado, volver a preguntar y elegir otro rol.
+   - Mostrar un prompt interactivo (ask_questions) para que el usuario confirme o haga override del rol.
+      - Si el usuario provee una respuesta custom, pedir (ask_questions) la contraseña correspondiente.
 6. Abrir el browser y navegar a la URL seleccionada usando `mcp_playwright_browser_navigate`.
 7. Limpiar `localStorage` y `sessionStorage` usando `mcp_playwright_browser_evaluate`.
 8. Recargar la página para forzar la pantalla de login.
