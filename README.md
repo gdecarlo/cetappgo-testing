@@ -5,9 +5,11 @@ Este repositorio contiene la documentación, configuración y herramientas neces
 ## Inicio rapido (no tecnico)
 
 ### 1) Generar casos desde Jira
+
 Genera los casos de prueba para el ticket PG-XXXX
 
 ### 2) Ejecutar un caso
+
 Ejecuta el TC-XXX
 
 ## Estructura de Archivos
@@ -120,13 +122,14 @@ Plantillas diseñadas para obtener los mejores resultados de los modelos de IA.
 
 ### Requisitos Previos
 
-- Node.js (v16 o superior)
+- Node.js (v24 o superior)
 - npm o pnpm
 
 ### Instalación
 
 1. Clonar el repositorio.
 2. Instalar dependencias:
+
    ```bash
    pnpm install
    # o
