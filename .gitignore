@@ -5,3 +5,7 @@ playwright-report/
 evidence
 .playwright-mcp/*.log
 .vscode/test-cases/*.md
+.env
+.playwright-cli/*.yml
+.playwright-cli/*.png
+.playwright-cli/console-*.log
